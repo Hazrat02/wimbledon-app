@@ -5,8 +5,8 @@
     <!-- Spinner Start -->
     <div
       v-if="this.$isLoading()"
-      id="spinner"
-      class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+      id="spinner" style="background-color: #292444e1;"
+      class="show  position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
     >
       <div
         class="spinner-border text-primary"
@@ -25,9 +25,9 @@
               <nav
                 class="navbar navbar-expand-lg navbar-light px-0 justify-content-between"
               >
-                <a class="navbar-brand" href="index.html"
+                <router-link to="/" class="navbar-brand"
                   >
-                  <span>Wimbledon</span></a
+                  <span>Wimbledon</span></router-link
                 >
 
                 <div class="dashboard_log my-2">
@@ -35,11 +35,11 @@
                     <div class="account_money">
                       <ul>
                         <li class="crypto">
-                          <span>0.0025</span>
+                          <span>${{ Number(authUser.live_balance)}}</span>
                           <i class="cc BTC-alt"></i>
                         </li>
                         <li class="usd">
-                          <span>19.93 USD</span>
+                          <span>{{ Number(authUser.main_balance) + Number(authUser.live_balance) }} USD</span>
                         </li>
                       </ul>
                     </div>
@@ -56,19 +56,17 @@
                       <div class="dropdown-menu dropdown-menu-right" :class="{
               show: this.sidebarOpen === true,
             }">
-                        <a href="accounts.html" class="dropdown-item">
+                        <router-link to="/account" class="dropdown-item">
                           <i class="fa fa-user"></i> Account
-                        </a>
-                        <a href="history.html" class="dropdown-item">
+                        </router-link>
+                        <router-link to="/transaction" class="dropdown-item">
                           <i class="fa fa-book"></i> History
-                        </a>
-                        <a href="settings.html" class="dropdown-item">
-                          <i class="fa fa-cog"></i> Setting
-                        </a>
-                        <a href="lock.html" class="dropdown-item">
-                          <i class="fa fa-lock"></i> Lock
-                        </a>
-                        <a href="signin.html" class="dropdown-item logout">
+                        </router-link>
+                        <router-link to="/kyc" class="dropdown-item">
+                          <i class="fa fa-id-badge"></i> Kyc
+                        </router-link>
+                      
+                        <a @click="logout" class="dropdown-item logout">
                           <i class="fa fa-sign-out"></i> Logout
                         </a>
                       </div>

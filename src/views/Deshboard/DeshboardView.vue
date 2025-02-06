@@ -27,28 +27,28 @@
                 <div class="card-body pt-0">
                   <div class="balance-widget">
                     <div class="total-balance">
-                      <h3>$63411.00</h3>
+                      <h3>${{ Number(authUser.main_balance) + Number(authUser.live_balance) }}</h3>
                       <h6>Total Balance</h6>
                     </div>
                     <ul class="list-unstyled">
                       <li class="d-flex">
                         <i class="cc BTC me-3"></i>
                         <div class="flex-grow-1">
-                          <h5 class="m-0">Bitcoin</h5>
+                          <h5 class="m-0">Main wallet</h5>
                         </div>
                         <div class="text-end">
-                          <h5>0.000242 BTC</h5>
-                          <span>0.125 USD</span>
+                          <h5>{{ Number(authUser.main_balance) }}</h5>
+                          <span>USD</span>
                         </div>
                       </li>
                       <li class="d-flex">
                         <i class="cc LTC me-3"></i>
                         <div class="flex-grow-1">
-                          <h5 class="m-0">Litecoin</h5>
+                          <h5 class="m-0">Live Wallet</h5>
                         </div>
                         <div class="text-end">
-                          <h5>0.000242 LTC</h5>
-                          <span>0.125 USD</span>
+                          <h5>{{ Number(authUser.live_balance) }}</h5>
+                          <span>USD</span>
                         </div>
                       </li>
                       <li class="d-flex">
@@ -61,16 +61,7 @@
                           <span>0.125 USD</span>
                         </div>
                       </li>
-                      <li class="d-flex">
-                        <i class="cc DASH me-3"></i>
-                        <div class="flex-grow-1">
-                          <h5 class="m-0">Dash</h5>
-                        </div>
-                        <div class="text-end">
-                          <h5>0.000242 XRP</h5>
-                          <span>0.125 USD</span>
-                        </div>
-                      </li>
+                      
                     </ul>
                   </div>
                 </div>
@@ -105,52 +96,21 @@
                     <div class="row">
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
-                          <p class="mb-1">24hr Volume</p>
-                          <h5>$1236548.325</h5>
+                          <p class="mb-2">Total Withdrawals</p>
+                          <h4 class="mb-0">${{sumtrx}}</h4>
+                        
                         </div>
                       </div>
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
-                          <p class="mb-1">Market Cap</p>
-                          <h5>19B USD</h5>
+                          <p class="mb-2">Total Deposit</p>
+                          <h4 class="mb-0">${{sumDeptrx}}</h4>
+                        
                         </div>
                       </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">Circulating Supply</p>
-                          <h5>29.4M BTC</h5>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">All Time High</p>
-                          <h5>19.783.06 USD</h5>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">Typical hold time</p>
-                          <h5>88 days</h5>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">Trading activity</p>
-                          <h5>70% buy</h5>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">Popularity</p>
-                          <h5>#1 most held</h5>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-1">Popularity</p>
-                          <h5>#1 most held</h5>
-                        </div>
-                      </div>
+
+
+                   
                     </div>
                   </div>
                 </div>
@@ -258,23 +218,38 @@
             <div class="col-xl-3 col-lg-4 col-xxl-4">
               <div class="card">
                 <div class="card-header border-0 py-0">
-                  <h4 class="card-title">Exchange</h4>
+                  <h4 class="card-title">Transaction</h4>
                 </div>
                 <div class="card-body">
                   <div class="buy-sell-widget">
-                    <form method="post" name="myform" class="currency_validate">
+                    <form
+                      class="currency_validate"
+                      @submit.prevent="depositNow"
+                    >
                       <div class="mb-3">
-                        <label class="me-sm-2">Currency</label>
+                        <label class="me-sm-2">Account Category</label>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <label class="input-group-text"
-                              ><i class="cc BTC-alt"></i
+                              ><i
+                                class="cc BTC-alt fa fa-address-card"
+                                style="font-size: 38px"
+                              ></i
                             ></label>
                           </div>
-                          <select name="currency" class="form-control">
-                            <option value="">Select</option>
-                            <option value="bitcoin">Bitcoin</option>
-                            <option value="litecoin">Litecoin</option>
+                          <select
+                            class="form-control"
+                            id="Account"
+                            required
+                            v-model="address"
+                          >
+                            <option selected disabled>Select</option>
+                            <option value="Wallet">
+                              Wallet Account (${{ authUser.main_balance }})
+                            </option>
+                            <option value="Live">
+                              Live Account (${{ authUser.live_balance }})
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -284,40 +259,43 @@
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <label class="input-group-text"
-                              ><i class="fa fa-bank"></i
+                              ><i
+                                class="fa fa-credit-card"
+                                style="font-size: 38px"
+                              ></i
                             ></label>
                           </div>
-                          <select class="form-control" name="method">
-                            <option value="">Select</option>
-                            <option value="bank">
-                              Bank of America ********45845
-                            </option>
-                            <option value="master">
-                              Master Card ***********5458
-                            </option>
+                          <select
+                            class="form-control"
+                            v-model="method"
+                            required
+                          >
+                            <option selected disabled>Select</option>
+                            <option value="btc">Bitcoin</option>
+                            <option value="bnb">BNB</option>
+                            <option value="ltc">Lite Coin</option>
+                            <option value="Trust Wallet">Trust Wallet</option>
+                            <option value="Bit Pay">Bit Pay</option>
                           </select>
                         </div>
                       </div>
 
                       <div class="mb-3">
-                        <label class="me-sm-2">Enter your amount</label>
+                        <label class="me-sm-2"> Deposit Amount</label>
                         <div class="input-group">
                           <input
-                            type="text"
-                            name="currency_amount"
+                            type="number"
+                            v-model="amount"
                             class="form-control"
-                            placeholder="0.0214 BTC"
+                            placeholder="Enter Your Amount."
                           />
                           <input
                             type="text"
                             name="usd_amount"
                             class="form-control"
-                            placeholder="125.00 USD"
+                            placeholder="Min-10 USD"
+                            disabled
                           />
-                        </div>
-                        <div class="d-flex justify-content-between mt-3">
-                          <p class="mb-0">Monthly Limit</p>
-                          <h6 class="mb-0">$49750 remaining</h6>
                         </div>
                       </div>
                       <button
@@ -325,7 +303,7 @@
                         name="submit"
                         class="btn btn-success btn-block"
                       >
-                        Exchange Now
+                        Deposit Now
                       </button>
                     </form>
                   </div>
@@ -336,83 +314,87 @@
               <div class="card">
                 <div class="card-header border-0 py-0">
                   <h4 class="card-title">Recent Activities</h4>
-                  <a href="#">View More </a>
+                  <RouterLink to="/transaction">View More </RouterLink>
                 </div>
                 <div class="card-body">
                   <div class="transaction-table">
                     <div class="table-responsive">
                       <table class="table mb-0 table-responsive-sm">
                         <tbody>
-                          <tr>
+                          <tr
+                            v-for="(
+                              transactionItem, index
+                            ) in transactions.slice(0, 5)"
+                            :key="index"
+                          >
                             <td>
-                              <span class="sold-thumb"
-                                ><i class="fa fa-arrow-down"></i
+                              <span
+                                class="sold-thumb"
+                                :class="{
+                                  'sold-thumb':
+                                    transactionItem.type === 'withdraw',
+                                  'buy-thumb':
+                                    transactionItem.type !== 'withdraw',
+                                }"
+                                ><i
+                                  class="fa"
+                                  :class="{
+                                    'fa-arrow-up':
+                                      transactionItem.type === 'withdraw',
+                                    'fa-arrow-down':
+                                      transactionItem.type !== 'withdraw',
+                                  }"
+                                ></i
                               ></span>
+                            </td>
+                            <td>
+                              {{ transactionItem.created_at.substring(0, 10) }}
                             </td>
 
                             <td>
-                              <span class="badge badge-danger">Sold</span>
-                            </td>
-                            <td><i class="cc BTC"></i> Bitcoin</td>
-                            <td>Using - Bank *******5264</td>
-                            <td class="text-danger">-0.000242 BTC</td>
-                            <td>-0.125 USD</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <span class="buy-thumb"
-                                ><i class="fa fa-arrow-up"></i
-                              ></span>
+                              <span
+                                class="badge badge-danger"
+                                :class="{
+                                  'badge-danger':
+                                    transactionItem.type === 'withdraw',
+                                  'badge-success':
+                                    transactionItem.type !== 'withdraw',
+                                }"
+                                >{{ transactionItem.type }}</span
+                              >
                             </td>
                             <td>
-                              <span class="badge badge-success">Buy</span>
-                            </td>
-                            <td><i class="cc LTC"></i> Litecoin</td>
-                            <td>Using - Card *******8475</td>
-                            <td class="text-success">-0.000242 BTC</td>
-                            <td>-0.125 USD</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <span class="sold-thumb"
-                                ><i class="fa fa-arrow-down"></i
-                              ></span>
+                              <i class="cc LTC"></i>
+                              {{ transactionItem.method }}
                             </td>
                             <td>
-                              <span class="badge badge-danger">Sold</span>
+                              Using - {{ transactionItem.address }} wallet
                             </td>
-                            <td><i class="cc XRP"></i> Ripple</td>
-                            <td>Using - Card *******8475</td>
-                            <td class="text-danger">-0.000242 BTC</td>
-                            <td>-0.125 USD</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <span class="buy-thumb"
-                                ><i class="fa fa-arrow-up"></i
-                              ></span>
-                            </td>
-                            <td>
-                              <span class="badge badge-success">Buy</span>
-                            </td>
-                            <td><i class="cc DASH"></i> Dash</td>
-                            <td>Using - Card *******2321</td>
-                            <td class="text-success">-0.000242 BTC</td>
-                            <td>-0.125 USD</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <span class="sold-thumb"
-                                ><i class="fa fa-arrow-down"></i
-                              ></span>
+                            <td
+                              class=""
+                              :class="{
+                                'text-danger':
+                                  transactionItem.type === 'withdraw',
+                                'text-success':
+                                  transactionItem.type !== 'withdraw',
+                              }"
+                            >
+                              {{ transactionItem.amount }} USD
                             </td>
                             <td>
-                              <span class="badge badge-danger">Sold</span>
+                              <span
+                                class="badge"
+                                :class="{
+                                  'bg-warning':
+                                    transactionItem.status === 'pending',
+                                  'bg-danger':
+                                    transactionItem.status === 'rejected',
+                                  'bg-success':
+                                    transactionItem.status === 'success',
+                                }"
+                                >{{ transactionItem.status }}</span
+                              >
                             </td>
-                            <td><i class="cc BTC"></i> Bitcoin</td>
-                            <td>Using - Card *******2321</td>
-                            <td class="text-danger">-0.000242 BTC</td>
-                            <td>-0.125 USD</td>
                           </tr>
                         </tbody>
                       </table>
@@ -526,14 +508,19 @@
 <script>
 import { useAuthUserStore } from "../../store/user";
 import { transactionStore } from "../../store/transaction";
-
+import axios from "axios";
 import { Chart } from "chart.js/auto";
+import { RouterLink } from "vue-router";
 
 export default {
   data() {
     return {
       authUser: [],
+      page: "deposit",
 
+      amount: "",
+      address: "Select",
+      method: "Select",
       transactions: [],
       chart: null,
       chartData: {
@@ -558,6 +545,47 @@ export default {
     };
   },
   methods: {
+    generateTRXId() {
+      return "TRX-" + Math.floor(Math.random() * 1000000);
+    },
+    async depositNow() {
+      this.$setLoading(true);
+
+      const data = {
+        status: "pending",
+        method: this.method,
+        type: "deposit",
+        amount: this.amount,
+        address: this.address,
+        trx: this.generateTRXId(),
+      };
+
+      await axios
+        .post("api/deposit", data)
+        .then((response) => {
+          this.$setLoading(false);
+          // transactionStore===================================
+          this.$router.push("/transaction");
+
+          this.$notify({
+            title: "message",
+            text: response.data.message,
+            type: "success",
+          });
+          const getTransaction = transactionStore();
+
+          getTransaction.addTransaction(response.data);
+        })
+        .catch((error) => {
+          // Handle the error
+          this.$setLoading(false);
+          this.$notify({
+            title: "Error message",
+            text: error.response.data.message,
+            type: "error",
+          });
+        });
+    },
     initChart() {
       const ctx = this.$refs.chartCanvas.getContext("2d");
       this.chart = new Chart(ctx, {
@@ -632,6 +660,23 @@ export default {
       ).filter(
         (transaction) =>
           transaction.type === "Withdraw" && transaction.status === "success"
+      );
+
+      // Use reduce to calculate the sum
+      const sum = withdrawSuccessTransactions.reduce(
+        (total, transaction) => total + transaction.amount,
+        0
+      );
+
+      return sum;
+    },
+    sumDeptrx() {
+      // Filter withdraw transactions with status success and calculate the sum
+      const withdrawSuccessTransactions = Object.values(
+        this.transactions
+      ).filter(
+        (transaction) =>
+          transaction.type === "deposit" && transaction.status === "success"
       );
 
       // Use reduce to calculate the sum

@@ -1,10 +1,6 @@
 <template>
   <DeshboardLayout>
-
-      <div class="page_title">
-        
-      </div>
-
+    <div class="page_title"></div>
 
     <div class="content-body">
       <div class="container-fluid">
@@ -15,39 +11,51 @@
                 <div class="buy-sell-widget">
                   <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#buy"
-                        >Buy</a
+                      <button
+                        class="nav-link"
+                        @click="page = 'deposit'"
+                        :class="{ active: page === 'deposit' }"
                       >
+                        Deposit
+                      </button>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#sell"
-                        >Sell</a
+                      <button
+                        class="nav-link"
+                        :class="{ active: page === 'withdraw' }"
+                        @click="page = 'withdraw'"
                       >
+                        Withdraw
+                      </button>
                     </li>
                   </ul>
                   <div class="tab-content tab-content-default">
                     <div
-                      class="tab-pane fade show active"
-                      id="buy"
-                      role="tabpanel"
+                      class="tab-pane fade"
+                      :class="{ 'active show': page === 'deposit' }"
                     >
-                      <form
-                        method="post"
-                        name="myform"
-                        class="currency_validate"
-                      >
+                      <form class="currency_validate"  @submit.prevent="depositNow">
                         <div class="mb-3">
-                          <label class="me-sm-2">Currency</label>
+                          <label class="me-sm-2">Account Category</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="cc BTC-alt"></i
+                                ><i class="cc BTC-alt fa fa-address-card" style="font-size: 38px;"></i
                               ></label>
                             </div>
-                            <select name="currency" class="form-control">
-                              <option value="">Select</option>
-                              <option value="bitcoin">Bitcoin</option>
-                              <option value="litecoin">Litecoin</option>
+                            <select
+                              class="form-control"
+                              id="Account"
+                              required
+                              v-model="address"
+                            >
+                              <option selected disabled>Select</option>
+                              <option value="Wallet">
+                                Wallet Account (${{ authUser.main_balance }})
+                              </option>
+                              <option value="Live">
+                                Live Account (${{ authUser.live_balance }})
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -57,69 +65,80 @@
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="fa fa-bank"></i
+                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
                               ></label>
                             </div>
-                            <select class="form-control" name="method">
-                              <option value="">Select</option>
-                              <option value="bank">
-                                Bank of America ********45845
-                              </option>
-                              <option value="master">
-                                Master Card ***********5458
-                              </option>
-                            </select>
+                            <select
+                  class="form-control"
+                
+                  v-model="method"
+                  required
+                >
+                  <option selected disabled>Select</option>
+                  <option value="btc">Bitcoin</option>
+                  <option value="bnb">BNB</option>
+                  <option value="ltc">Lite Coin</option>
+                  <option value="Trust Wallet">Trust Wallet</option>
+                  <option value="Bit Pay">Bit Pay</option>
+                </select>
+                            
                           </div>
                         </div>
 
                         <div class="mb-3">
-                          <label class="me-sm-2">Enter your amount</label>
+                          <label class="me-sm-2"> Deposit Amount</label>
                           <div class="input-group">
                             <input
-                              type="text"
-                              name="currency_amount"
+                              type="number"
+                             v-model="amount"
                               class="form-control"
-                              placeholder="0.0214 BTC"
+                              placeholder="Enter Your Amount."
                             />
                             <input
                               type="text"
                               name="usd_amount"
                               class="form-control"
-                              placeholder="125.00 USD"
+                              placeholder="Min-10 USD"
+                              disabled
                             />
                           </div>
-                          <div class="d-flex justify-content-between mt-3">
-                            <p class="mb-0">Monthly Limit</p>
-                            <h6 class="mb-0">$49750 remaining</h6>
-                          </div>
+                         
                         </div>
                         <button
                           type="submit"
                           name="submit"
                           class="btn btn-success btn-block"
                         >
-                          Exchange Now
+                          Deposit Now
                         </button>
                       </form>
                     </div>
-                    <div class="tab-pane fade" id="sell">
-                      <form
-                        method="post"
-                        name="myform"
-                        class="currency2_validate"
-                      >
+                    <div
+                      class="tab-pane fade"
+                      :class="{ 'active show': page === 'withdraw' }"
+                    >
+                    <form class="currency_validate"  @submit.prevent="withdrawNow">
                         <div class="mb-3">
-                          <label class="me-sm-2">Currency</label>
+                          <label class="me-sm-2">Account Category</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="cc BTC-alt"></i
+                                ><i class="cc BTC-alt fa fa-address-card" style="font-size: 38px;"></i
                               ></label>
                             </div>
-                            <select name="currency" class="form-control">
-                              <option value="">Select</option>
-                              <option value="bitcoin">Bitcoin</option>
-                              <option value="litecoin">Litecoin</option>
+                            <select
+                              class="form-control"
+                              id="Account"
+                              required
+                              v-model="address"
+                            >
+                              <option selected disabled>Select</option>
+                              <option value="Wallet">
+                                Wallet Account (${{ authUser.main_balance }})
+                              </option>
+                              <option value="Live">
+                                Live Account (${{ authUser.live_balance }})
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -129,59 +148,61 @@
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="fa fa-bank"></i
+                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
                               ></label>
                             </div>
-                            <select class="form-control" name="method">
-                              <option value="">Select</option>
-                              <option value="bank">
-                                Bank of America ********45845
-                              </option>
-                              <option value="master">
-                                Master Card ***********5458
-                              </option>
-                            </select>
+                            <select
+                  class="form-control"
+                
+                  v-model="method"
+                  required
+                >
+                  <option selected disabled>Select</option>
+                  <option value="btc">Bitcoin</option>
+                  <option value="bnb">BNB</option>
+                  <option value="ltc">Lite Coin</option>
+                  <option value="Trust Wallet">Trust Wallet</option>
+                  <option value="Bit Pay">Bit Pay</option>
+                </select>
+                            
                           </div>
                         </div>
 
                         <div class="mb-3">
-                          <label class="me-sm-2">Enter your amount</label>
+                          <label class="me-sm-2"> Deposit Amount</label>
                           <div class="input-group">
                             <input
-                              type="text"
-                              name="currency_amount"
+                              type="number"
+                             v-model="amount"
                               class="form-control"
-                              placeholder="0.0214 BTC"
+                              placeholder="Enter Your Amount."
                             />
                             <input
                               type="text"
                               name="usd_amount"
                               class="form-control"
-                              placeholder="125.00 USD"
+                              placeholder="Min-10 USD"
+                              disabled
                             />
                           </div>
-                          <div class="d-flex justify-content-between mt-3">
-                            <p class="mb-0">Monthly Limit</p>
-                            <h6 class="mb-0">$49750 remaining</h6>
-                          </div>
+                         
                         </div>
                         <button
                           type="submit"
                           name="submit"
-                          class="btn btn-success btn-block"
+                          class="btn btn-danger btn-block"
                         >
-                          Exchange Now
+                          Withdraw Now
                         </button>
                       </form>
+                 
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <p class="p-4">
-              Note: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Modi cupiditate suscipit explicabo voluptas eos in tenetur error
-              temporibus dolorum. Nulla!
+              Note: Always double-check the wallet address before proceeding with any transaction. Sending funds to the wrong wallet is irreversible, and lost funds cannot be recovered. Ensure accuracy to avoid financial loss.
             </p>
           </div>
           <div class="col-xl-7 col-lg-7 col-md-12">
@@ -192,28 +213,29 @@
                     <div class="buyer-info">
                       <div class="d-flex align-items-center">
                         <img
+                        style="border-radius: 10px;"
                           class="me-3"
-                          src="./images/profile/2.png"
+                          src="https://img.freepik.com/premium-vector/wallet-icon-outline-wallet-vector-icon-web-design-isolated-white-background_775815-285.jpg?w=740"
                           alt=""
                           width="50"
                         />
                         <div class="flex-grow-1">
-                          <h4>Buyer</h4>
-                          <h5>Michael John</h5>
-                          <a href="#">hello@example.com</a>
+                          <h4>Balance</h4>
+                          <h5>Main Wallet</h5>
+                          <a >{{ authUser.main_balance }} $</a>
                         </div>
                       </div>
                     </div>
                     <div class="seller-info text-end">
                       <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                          <h4>Seller</h4>
-                          <h5>John Doe</h5>
-                          <a href="#">hello@example.com</a>
+                          <h4>Balance</h4>
+                          <h5>Live Wallet</h5>
+                          <a>{{authUser.live_balance}} $</a>
                         </div>
-                        <img
+                        <img style="border-radius: 10px;"
                           class="ms-3"
-                          src="./images/profile/1.png"
+                          src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRr1UFDxfwDlcZ7nQdOhOc8lz4IrfVwTAN7gcigohmGr_kqrksw"
                           alt=""
                           width="50"
                         />
@@ -225,196 +247,34 @@
                       <tbody>
                         <tr>
                           <td>
-                            <span class="text-primary">You are selling</span>
+                            <span class="text-primary">You are {{this.page}}ing</span>
                           </td>
-                          <td><span class="text-primary">0.00254 BTC</span></td>
+                          <td><span class="text-primary">{{ Number(this.amount) + 0 }} USC</span></td>
                         </tr>
                         <tr>
                           <td>Payment Method</td>
-                          <td>Bank of America Bank ***********5245</td>
+                          <td>{{this.method}}</td>
                         </tr>
-                        <tr>
-                          <td>Exchange Rate</td>
-                          <td>0.00212455 BTC</td>
-                        </tr>
+                       
                         <tr>
                           <td>Fee</td>
-                          <td>$28.00 USD</td>
+                          <td>$0.00 USD</td>
                         </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>$854.00 USD</td>
-                        </tr>
+                     
                         <tr>
                           <td>Vat</td>
                           <td>
-                            <div class="text-danger">$25.00 USD</div>
+                            <div class="text-danger">$0.00 USD</div>
                           </td>
                         </tr>
                         <tr>
-                          <td>Sub Total</td>
-                          <td>$1232.00 USD</td>
+                          <td>Total</td>
+                          <td>${{ Number(this.amount) + 0 }} USD</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xl-6 col-xxl-12">
-            <div class="card">
-              <div class="card-header">
-                <h4 class="card-title">FAQ</h4>
-              </div>
-              <div class="card-body">
-                <div id="accordion-faq" class="accordion">
-                  <div class="card">
-                    <div class="card-header">
-                      <h5
-                        class="mb-0 collapsed c-pointer"
-                        data-toggle="collapse"
-                        data-target="#collapseOne1"
-                        aria-expanded="false"
-                        aria-controls="collapseOne1"
-                      >
-                        <i class="fa" aria-hidden="true"></i>What Shipping
-                        Methods are Available?
-                      </h5>
-                    </div>
-                    <div
-                      id="collapseOne1"
-                      class="collapse show"
-                      data-parent="#accordion-faq"
-                    >
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. 3 wolf moon
-                        officia aute, non cupidatat skateboard dolor brunch.
-                        Food truck quinoa nesciunt laborum eiusmod.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header">
-                      <h5
-                        class="mb-0 collapsed c-pointer"
-                        data-toggle="collapse"
-                        data-target="#collapseTwo2"
-                        aria-expanded="false"
-                        aria-controls="collapseTwo2"
-                      >
-                        <i class="fa" aria-hidden="true"></i>How Long Will it
-                        Take To Get My Package?
-                      </h5>
-                    </div>
-                    <div
-                      id="collapseTwo2"
-                      class="collapse"
-                      data-parent="#accordion-faq"
-                    >
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. 3 wolf moon
-                        officia aute, non cupidatat skateboard dolor brunch.
-                        Food truck quinoa nesciunt laborum eiusmod.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header">
-                      <h5
-                        class="mb-0 collapsed c-pointer"
-                        data-toggle="collapse"
-                        data-target="#collapseThree3"
-                        aria-expanded="false"
-                        aria-controls="collapseThree3"
-                      >
-                        <i class="fa" aria-hidden="true"></i>How Do I Track My
-                        Order?
-                      </h5>
-                    </div>
-                    <div
-                      id="collapseThree3"
-                      class="collapse"
-                      data-parent="#accordion-faq"
-                    >
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. 3 wolf moon
-                        officia aute, non cupidatat skateboard dolor brunch.
-                        Food truck quinoa nesciunt laborum eiusmod.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header">
-                      <h5
-                        class="mb-0 collapsed c-pointer"
-                        data-toggle="collapse"
-                        data-target="#collapseThree4"
-                        aria-expanded="false"
-                        aria-controls="collapseThree4"
-                      >
-                        <i class="fa" aria-hidden="true"></i>Do I Need A Account
-                        To Place Order?
-                      </h5>
-                    </div>
-                    <div
-                      id="collapseThree4"
-                      class="collapse"
-                      data-parent="#accordion-faq"
-                    >
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. 3 wolf moon
-                        officia aute, non cupidatat skateboard dolor brunch.
-                        Food truck quinoa nesciunt laborum eiusmod.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header">
-                      <h5
-                        class="mb-0 collapsed c-pointer"
-                        data-toggle="collapse"
-                        data-target="#collapseThree5"
-                        aria-expanded="false"
-                        aria-controls="collapseThree5"
-                      >
-                        <i class="fa" aria-hidden="true"></i>How do I Place an
-                        Order?
-                      </h5>
-                    </div>
-                    <div
-                      id="collapseThree5"
-                      class="collapse"
-                      data-parent="#accordion-faq"
-                    >
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. 3 wolf moon
-                        officia aute, non cupidatat skateboard dolor brunch.
-                        Food truck quinoa nesciunt laborum eiusmod.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="intro-video-play">
-              <div class="play-btn">
-                <a
-                  class="popup-youtube"
-                  href="https://www.youtube.com/watch?v=IjzUwnqWc5Q"
-                >
-                  <span><i class="fa fa-play"></i></span
-                ></a>
               </div>
             </div>
           </div>
@@ -531,6 +391,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      page: "deposit",
       authUser: [],
       amount: "",
       address: "Select",
@@ -538,6 +399,9 @@ export default {
     };
   },
   methods: {
+    generateTRXId() {
+    return "TRX-" + Math.floor(Math.random() * 1000000);
+  },
     async depositNow() {
       this.$setLoading(true);
 
@@ -576,6 +440,97 @@ export default {
           });
         });
     },
+    async withdrawNow() {
+      this.$setLoading(true);
+
+      const data = {
+        status:'pending',
+        method: this.method,
+        type: "withdraw",
+        amount: this.amount,
+        address: this.address,
+      };
+
+      if (this.address === "Wallet" || this.address === "wallet") {
+        if (this.amount > this.authUser.main_balance) {
+          this.$setLoading(false);
+          this.$notify({
+            title: "Message",
+            text: `Your balance is too low. Current balance: ${this.authUser.main_balance} $`,
+            type: "error",
+          });
+          this.$setLoading(false);
+        } else {
+          await axios
+            .post("api/deposit", data)
+            .then((response) => {
+              this.$setLoading(false);
+              this.authUser.main_balance =
+                this.authUser.main_balance - this.amount;
+              this.$router.push("/transaction");
+
+              // transactionStore===================================
+
+              this.$notify({
+                title: "message",
+                text: response.data.message,
+                type: "success",
+              });
+              const getTransaction = transactionStore();
+
+              getTransaction.addTransaction(response.data);
+            })
+            .catch((error) => {
+              // Handle the error
+              this.$setLoading(false);
+              this.$notify({
+                title: "Error message",
+                text: error.response.data.message,
+                type: "error",
+              });
+            });
+        }
+      } else {
+        if (this.amount > this.authUser.live_balance) {
+          this.$setLoading(false);
+          this.$notify({
+            title: "message",
+            text: `Your balance is too low. Current balance: ${this.authUser.live_balance} $`,
+            type: "error",
+          });
+        } else {
+          await axios
+            .post("api/deposit", data)
+            .then((response) => {
+              this.$setLoading(false);
+              this.authUser.live_balance=this.authUser.live_balance - this.amount;
+                
+
+              this.$router.push("/transaction");
+
+              // transactionStore===================================
+
+              this.$notify({
+                title: "message",
+                text: response.data.message,
+                type: "success",
+              });
+              const getTransaction = transactionStore();
+
+              getTransaction.addTransaction(response.data);
+            })
+            .catch((error) => {
+              // Handle the error
+              this.$setLoading(false);
+              this.$notify({
+                title: "Error message",
+                text: error.response.data.message,
+                type: "error",
+              });
+            });
+        }
+      }
+    },
   },
 
   async created() {
@@ -600,3 +555,8 @@ export default {
 };
 </script>
 
+<style>
+/* .form-control{
+  background-color: black !important;
+} */
+</style>
