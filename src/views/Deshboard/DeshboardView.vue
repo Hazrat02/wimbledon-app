@@ -27,7 +27,12 @@
                 <div class="card-body pt-0">
                   <div class="balance-widget">
                     <div class="total-balance">
-                      <h3>${{ Number(authUser.main_balance) + Number(authUser.live_balance) }}</h3>
+                      <h3>
+                        ${{
+                          Number(authUser.main_balance) +
+                          Number(authUser.live_balance)
+                        }}
+                      </h3>
                       <h6>Total Balance</h6>
                     </div>
                     <ul class="list-unstyled">
@@ -61,7 +66,6 @@
                           <span>0.125 USD</span>
                         </div>
                       </li>
-                      
                     </ul>
                   </div>
                 </div>
@@ -97,20 +101,15 @@
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
                           <p class="mb-2">Total Withdrawals</p>
-                          <h4 class="mb-0">${{sumtrx}}</h4>
-                        
+                          <h4 class="mb-0">${{ sumtrx }}</h4>
                         </div>
                       </div>
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
                           <p class="mb-2">Total Deposit</p>
-                          <h4 class="mb-0">${{sumDeptrx}}</h4>
-                        
+                          <h4 class="mb-0">${{ sumDeptrx }}</h4>
                         </div>
                       </div>
-
-
-                   
                     </div>
                   </div>
                 </div>
@@ -320,13 +319,16 @@
                   <div class="transaction-table">
                     <div class="table-responsive">
                       <table class="table mb-0 table-responsive-sm">
+                        <td v-if="transactions.length == 0">No data!</td>
                         <tbody>
+                          
                           <tr
                             v-for="(
                               transactionItem, index
-                            ) in transactions.slice(0, 5)"
+                            ) in transactions.slice(0, 4)"
                             :key="index"
                           >
+                           
                             <td>
                               <span
                                 class="sold-thumb"
@@ -408,98 +410,7 @@
       </div>
     </div>
 
-    <!-- <div class="container-fluid pt-4 px-4">
-      <div class="row g-4">
-        <div class="col-sm-6 col-xl-3">
-          <div
-            class="bg-secondary rounded d-flex align-items-center justify-content-between p-4"
-          >
-            <i class="fa fa-chart-line fa-3x text-primary"></i>
-            <div class="ms-3">
-
-              <p class="mb-2">Total Balance</p>
-              <h4 class="mb-0">                        ${{ Number(authUser.main_balance) + Number(authUser.live_balance) }}
-</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-          <div
-            class="bg-secondary rounded d-flex align-items-center justify-content-between p-4"
-          >
-            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-            <div class="ms-3">
-              <p class="mb-2">Total Withdrawals</p>
-              <h4 class="mb-0">${{sumtrx}}</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-          <div
-            class="bg-secondary rounded d-flex align-items-center justify-content-between p-4"
-          >
-            <i class="fa fa-chart-area fa-3x text-primary"></i>
-            <div class="ms-3">
-              <p class="mb-2">Last In</p>
-              <h4 class="mb-0">{{lastDepositCreatedAt}}</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-          <div
-            class="bg-secondary rounded d-flex align-items-center justify-content-between p-4"
-          >
-            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-            <div class="ms-3">
-              <p class="mb-2">Last Out</p>
-              <h4 class="mb-0">{{lastWithdrawCreatedAt}}</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid pt-4 px-4">
-      <div class="row g-4">
-        <div class="col-sm-12 col-xl-6">
-          <div class="bg-secondary text-center rounded p-4">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-              <h6 class="mb-0">Global Hotel Occupancy Index</h6>
-            </div>
-            <canvas id="worldwide-sales"></canvas>
-          </div>
-        </div>
-        <div class="col-sm-12 col-xl-6">
-          <div class="bg-secondary text-center rounded p-4">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-              <h6 class="mb-0">Average IRR Index</h6>
-            </div>
-            <canvas id="salse-revenue-chart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid pt-4 px-4">
-      <div class="row g-4">
-        <div class="col-sm-12 col-xl-6">
-          <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Annual Rental Appreciation Index</h6>
-            <canvas id="line-chart"></canvas>
-          </div>
-        </div>
-
-        <div class="col-sm-12 col-xl-6">
-          <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Country Specific Hotel Rental Tariff Index</h6>
-            <canvas id="bar-chart"></canvas>
-          </div>
-        </div>
-
-        <div class="bg-secondary rounded ">
-        </div>
-      </div>
-    </div> -->
+   
   </DeshboardLayout>
 </template>
   

@@ -150,37 +150,32 @@ export default {
 <template>
   <body>
     <!-- ======= Header ======= -->
-
-    <main id="main">
-      <div>
-        <HomeLayout>
-          <section id="contact" class="s-contact2">
-            <div class="overlay"></div>
-            <div class="contact__line"></div>
-
-            <div class="row1 section-header"  >
-              <div class="col-full">
-                <h3 class="subhead">Registration</h3>
-                <h1 class="display-2 display-2--light">
-                  start your investment journey by registering with us
-                </h1>
+    <div id="main-wrapper">
+      <div class="authincation section-padding">
+        <div class="container h-100">
+          <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-xl-5 col-md-6">
+              <div class="mini-logo text-center my-5">
+            
+                <!-- <img src="./images/m_logo.png" alt="" /> -->
               </div>
-            </div>
-
-            <div class="row1 contact-content"  >
-              <div class="contact-primary">
-                <h3 class="h6">Fill this form for Sign UP</h3>
-
-                <form
-                  enctype="multipart/form-data"
+              <div class="auth-form card">
+                <div class="card-header justify-content-center">
+                  <h4 class="card-title">Sign in</h4>
+                </div>
+                <div class="card-body">
+                  <form     enctype="multipart/form-data"
                   @submit.prevent="register"
                   name="contactForm"
-                  id="contactForm"
+            
                   method="post"
-                  action=""
-                >
-                  <fieldset>
-                    <div class="form-field">
+                    class="signin_validate"
+                 
+                  >
+                 
+     
+                    <div class="mb-1">
+                      <label for="name">Name</label>
                       <input
                         name="name"
                         placeholder="Enter Your Name"
@@ -188,24 +183,25 @@ export default {
                         type="text"
                         id="name"
                         required
-                        class="full-width"
+                        class="form-control"
                       />
                     </div>
-                    <div class="form-field" style="position: relative">
+                    <div class="mb-1" style="position: relative">
+                      <label for="email">Email</label>
                       <input
                         name="email"
                         placeholder="Enter Your Email"
                         v-model="email"
                         type="email"
-                        id="form3Example3"
+                        id="email"
                         required
-                        class="full-width"
+                        class="form-control"
                       />
                       <div
                         v-if="sendcode"
                         style="
                           position: absolute;
-                          top: 20%;
+                          top: 45%;
                           right: 5%;
                           cursor: pointer;
                         "
@@ -217,7 +213,7 @@ export default {
                         v-if="resendcode"
                         style="
                           position: absolute;
-                          top: 20%;
+                          top: 45%;
                           right: 5%;
                           cursor: pointer;
                         "
@@ -229,7 +225,7 @@ export default {
                         v-if="countdown"
                         style="
                           position: absolute;
-                          top: 20%;
+                          top: 45%;
                           right: 5%;
                           cursor: pointer;
                         "
@@ -238,21 +234,23 @@ export default {
                       </div>
                     </div>
                   
-                    <div class="form-field" >
+                    <div class="mb-1" >
+                      <label for="userCode">Code</label>
                       <input
                       id="userCode"
                             placeholder="Enter Your Code"
                             type="text"
                             v-model="userCode"
                             required
-                        class="full-width"
+                        class="form-control"
                       />
                   
                     </div>
-                    <div style="">
+                    <div class="mb-1">
+                      <label for="country">Select Country</label>
                       <select
-                        style="background-color: #111111;width: 100% !important;"
-                        class="form-field"
+                        
+                        class="form-control"
                         id="country"
                         v-model="country"
                       >
@@ -580,39 +578,32 @@ export default {
                         <option value="Zimbabwe">Zimbabwe</option>
                       </select>
                     </div>
-                    <div class="form-field" >
+                    <div class="mb-1" >
+                      <label for="phone">Phone No.</label>
                       <input
                       placeholder="Enter Your Phone"
                             type="number"
                             v-model="phone"
                             required
-                        class="full-width"
+                        class="form-control"
                       />
                       
                     </div>
-                    <!-- <div class="form-field" >
 
-                      <input
-                      placeholder="Enter Your Phone"
-                      id="profile_photo_path"
-                            type="file"
-                            @change="image"
-                        class="full-width"
-                      />
-                      
-                    </div> -->
-                    <div 
+                    <div class="mb-2"
                     >
-                      <input style="background-color: #161414;color: white"
+                    <label for=""> Birth Date</label>
+                      <input
 
                              type="date"
                             v-model="birth"
                             required
-                        class="full-width"
+                        class="form-control"
                       />
                    
                     </div>
-                    <div class="form-field" style="position: relative">
+                    <div class="mb-1" style="position: relative">
+                      <label for="password">Password</label>
                       <input
                         name="password"
                         placeholder="Enter Your Pass"
@@ -620,21 +611,12 @@ export default {
                         :type="passwordFieldType"
                         id="password"
                         required
-                        class="full-width"
+                        class="form-control"
                       />
-                      <i
-                        style="
-                          position: absolute;
-                          top: 15%;
-                          right: 5%;
-                          font-size: 25px;
-                        "
-                        class="fa"
-                        :class="icon"
-                        @click="togglePasswordVisibility"
-                      ></i>
+                      
                     </div>
-                    <div class="form-field" >
+                    <div class="mb-1" >
+                      <label for="">Retype Password</label>
                       <input
                      
                         placeholder="Retype  Pass"
@@ -642,37 +624,45 @@ export default {
                             :type="passwordFieldType"
                             v-model="password_confirmation"
                             required
-                        class="full-width"
+                        class="form-control"
                       />
                      
                     </div>
 
-                    <div class="form-field">
-                      <button class="full-width btn goldrose-btn" type="submit">
-                        Register
+
+                    <div class="row d-flex justify-content-between mt-4 mb-2">
+                      <div class="mb-1">
+                        <label class="toggle">
+                          <input class="toggle-checkbox" v-model="showPassword" type="checkbox" />
+                          <div class="toggle-switch"></div>
+                          <span class="toggle-label">Show Password</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-success btn-block">
+                        Sign Up
                       </button>
                     </div>
-                  </fieldset>
-                </form>
+                  </form>
+                  <div class="new-account mt-3">
+                    <p>
+                      Have You an account?
+                      <RouterLink class="text-primary" to="/login"
+                        >Login</RouterLink
+                      >
+                    </p>
+                  </div>
+                </div>
               </div>
-
-              <!-- end contact-primary -->
             </div>
-            <!-- <div>
-              <router-link to="/login"
-              >fdfdf</router-link>
-            </div> -->
-            <!-- end contact-content -->
-          </section>
-
-       
-        </HomeLayout>
+          </div>
+        </div>
       </div>
-    </main>
 
-    <!-- Scroll Top Button -->
+    </div>
 
-    <!-- Preloader -->
+ 
   </body>
-  <!-- <template v-slot:bodytext ></template> -->
+  
 </template>

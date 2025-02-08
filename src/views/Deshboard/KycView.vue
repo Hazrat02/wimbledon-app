@@ -1,12 +1,12 @@
 <template>
-  <div>
+
     <DeshboardLayout>
-      <div class="bg-dash-dark-2 py-4">
+      <div class="content-body">
         <div class="container-fluid">
           <h2 class=" mb-0">Upload Documents</h2>
         </div>
-      </div>
-      <section class="pt-0 mt-4 ">
+
+        <section class="pt-0 mt-4 ">
         <div class="container-fluid ">
           <div class="row gy-4 ">
             <div class="col-lg-8">
@@ -476,8 +476,10 @@
           </div>
         </div>
       </section>
+      </div>
+
     </DeshboardLayout>
-  </div>
+
 </template>
     
   <script>

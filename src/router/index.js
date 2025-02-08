@@ -2,13 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 
 import DeshboardView from '../views/Deshboard/DeshboardView.vue'
-import UserView from '../views/Deshboard/UserView.vue'
 import KycView from '../views/Deshboard/KycView.vue'
 import DepositView from '../views/Deshboard/DepositView.vue'
-import WithdrawView from '../views/Deshboard/WithdrawView.vue'
-import EconomicView from '../views/Deshboard/EconomicView.vue'
+
 import TransactionView from '../views/Deshboard/TransactionView.vue'
-import PaymentDetailsView from '../views/Deshboard/PaymentDetailsView.vue'
 import AccountView from '../views/Deshboard/AccountView.vue'
 
 
@@ -18,9 +15,9 @@ import AccountView from '../views/Deshboard/AccountView.vue'
 
 
 
-import LoginComponent from '../views/Auth/Login.vue'
-import RegisterComponent from '../views/Auth/Register.vue'
-import ForgetComponent from '../views/Auth/Forget.vue'
+import LoginComponent from './../views/auth/Login.vue';
+import RegisterComponent from '../views/auth/Register.vue';
+
 import authenticated from '../midleware/auth.js';
 import { logout } from "../midleware/auth.js";
 import { setloading } from '../utils/extra'
@@ -78,24 +75,7 @@ const router = createRouter({
         requiresAuth:true,
       },
     },
-    {
-      path: '/profile',
-      name: 'profile',
 
-      component:UserView,
-      meta:{
-        requiresAuth:true,
-      },
-    },
-    {
-      path: '/economic',
-      name: 'economic',
-
-      component:EconomicView,
-      meta:{
-        requiresAuth:true,
-      },
-    },
     {
       path: '/deposit',
       name: 'deposit',
@@ -105,16 +85,7 @@ const router = createRouter({
         requiresAuth:true,
       },
     },
-    
-    {
-      path: '/withdraw',
-      name: 'withdraw',
 
-      component:WithdrawView,
-      meta:{
-        requiresAuth:true,
-      },
-    },
     {
       path: '/transaction',
       name: 'transaction',
@@ -124,15 +95,7 @@ const router = createRouter({
         requiresAuth:true,
       },
     },
-    {
-      path: '/payment/details',
-      name: 'payment',
-
-      component:PaymentDetailsView,
-      meta:{
-        requiresAuth:true,
-      },
-    },
+    
     {
       path: '/account',
       name: 'account',

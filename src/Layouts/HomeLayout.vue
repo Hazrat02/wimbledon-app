@@ -3,6 +3,20 @@
 
   <body>
 
+    <div
+      v-if="this.$isLoading()"
+      id="spinner" style="background-color: #292444e1;"
+      class="show  position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+    >
+      <div
+        class="spinner-border text-primary"
+        style="width: 3rem; height: 3rem"
+        role="status"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
 
     <slot />
 
