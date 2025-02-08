@@ -5,8 +5,9 @@
     <!-- Spinner Start -->
     <div
       v-if="this.$isLoading()"
-      id="spinner" style="background-color: #292444e1;"
-      class="show  position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+      id="spinner"
+      style="background-color: #292444e1"
+      class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
     >
       <div
         class="spinner-border text-primary"
@@ -17,7 +18,7 @@
       </div>
     </div>
 
-    <div >
+    <div>
       <div class="header">
         <div class="container-fluid">
           <div class="row">
@@ -25,37 +26,54 @@
               <nav
                 class="navbar navbar-expand-lg navbar-light px-0 justify-content-between"
               >
-                <router-link to="/" class="navbar-brand"
+                <div class="navbar-brand">
+                  <i
+                    class="fa white menuIcon"
+                    :class="{
+                      'fa-bars': this.menuShow == false,
+                      'fa-close': this.menuShow == true,
+                    }"
+                    style="font-size: 30px; color: white"
+                    @click="menuIs"
+                  ></i>
+                  <router-link to="/" class="navbar-brand">
+                    <span>Wimbledon</span></router-link
                   >
-                  <span>Wimbledon</span></router-link
-                >
-
+                </div>
                 <div class="dashboard_log my-2">
                   <div class="d-flex align-items-center">
                     <div class="account_money">
                       <ul>
-                        <li class="crypto">
-                          <span>${{ Number(authUser.live_balance)}}</span>
-                          <i class="cc BTC-alt"></i>
-                        </li>
                         <li class="usd">
-                          <span>{{ Number(authUser.main_balance) + Number(authUser.live_balance) }} USD</span>
+                          <span
+                            >{{
+                              Number(authUser.main_balance) +
+                              Number(authUser.live_balance)
+                            }}
+                            USD</span
+                          >
                         </li>
                       </ul>
                     </div>
-                    <div class="profile_log dropdown" :class="{
-              show: this.sidebarOpen === true,
-            }">
+                    <div
+                      class="profile_log dropdown"
+                      :class="{
+                        show: this.sidebarOpen === true,
+                      }"
+                    >
                       <div class="user" @click="toggleSidebar">
                         <span class="thumb"><i class="fa fa-user"></i></span>
-                        <span class="name">{{ authUser.name }}</span>
+                        <span class="name">{{ String(authUser.name).substring(0, 6) }}</span>
                         <span class="arrow"
                           ><i class="fa fa-angle-down"></i
                         ></span>
                       </div>
-                      <div class="dropdown-menu dropdown-menu-right" :class="{
-              show: this.sidebarOpen === true,
-            }">
+                      <div
+                        class="dropdown-menu dropdown-menu-right"
+                        :class="{
+                          show: this.sidebarOpen === true,
+                        }"
+                      >
                         <router-link to="/account" class="dropdown-item">
                           <i class="fa fa-user"></i> Account
                         </router-link>
@@ -65,7 +83,7 @@
                         <router-link to="/kyc" class="dropdown-item">
                           <i class="fa fa-id-badge"></i> Kyc
                         </router-link>
-                      
+
                         <a @click="logout" class="dropdown-item logout">
                           <i class="fa fa-sign-out"></i> Logout
                         </a>
@@ -79,52 +97,71 @@
         </div>
       </div>
 
-      <div class="sidebar">
+      <div
+        class="sidebar"
+        :class="{
+          sideShow: this.menuShow == true,
+          'sideShow-0': this.menuShow == false,
+        }"
+      >
         <div class="menu">
           <ul>
             <li>
-              <router-link to="/"  :class="{
-              active: this.$route.path === '/',
-            }">
-                <span><i class="fa fa-igloo"></i></span>
+              <router-link
+                to="/"
+                :class="{
+                  active: this.$route.path === '/',
+                }"
+              >
+                <span><i class="fa fa-igloo me-1"> </i></span> HOME
               </router-link>
             </li>
             <li>
-              <router-link to="/deposit" :class="{active:
-                this.$route.path === '/deposit' ||
-                this.$route.path === '/withdraw' 
-
-            }" 
-                
+              <router-link
+                to="/deposit"
+                :class="{
+                  active:
+                    this.$route.path === '/deposit' ||
+                    this.$route.path === '/withdraw',
+                }"
               >
-                <span><i class="fa fa-exchange-alt"></i></span>
+                <span><i class="fa fa-exchange-alt me-3"></i></span> TRX
               </router-link>
             </li>
             <li>
-              <router-link to="/account"
-              :class="{
-              active: this.$route.path === '/account',
-            }"
-            
+              <router-link
+                to="/account"
+                :class="{
+                  active: this.$route.path === '/account',
+                }"
               >
-                <span><i class="fa fa-user"></i></span>
+                <span><i class="fa fa-user me-3"></i></span> INF.
               </router-link>
             </li>
             <li>
-              <router-link to="/kyc"
-                
-          
+              <router-link
+                to="/kyc"
+                :class="{
+                  active: this.$route.path === '/kyc',
+                }"
               >
-                <span><i class="fa fa-id-card"></i></span>
+                <span><i class="fa fa-id-card me-3"></i></span> KYC
               </router-link>
             </li>
           </ul>
         </div>
       </div>
 
-      <slot />
+      <div
+        class=""
+        :class="{
+          'body-0': this.menuShow == false,
+          'body-150': this.menuShow == true,
+        }"
+      >
+        <slot />
+      </div>
     </div>
-    
   </div>
 </template>
 
@@ -136,10 +173,10 @@ import { logout } from "./../midleware/auth";
 import axios from "axios";
 import { useAuthUserStore } from "../store/user";
 
-
 export default {
   data() {
     return {
+      menuShow: false,
       sidebarOpen: false,
       sidebar: false,
       isAuthenticated: false,
@@ -160,11 +197,13 @@ export default {
       // userStore.reSetAuthUser();
       this.authUser = await userStore.reSetAuthUser();
     }
-   
   },
   methods: {
     toggleSidebar() {
       this.sidebarOpen = !this.sidebarOpen;
+    },
+    menuIs() {
+      this.menuShow = !this.menuShow;
     },
     // toggleSidebar() {
     //   this.sidebar = !this.sidebar;
@@ -200,4 +239,59 @@ export default {
   },
 };
 </script>
+
+<style>
+.header {
+  padding: 0px 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1111;
+  transition: all 0.3s ease-in;
+  background: linear-gradient(
+    to bottom,
+    rgb(18, 3, 3) 0%,
+    rgba(20, 18, 0, 0.9) 50%,
+    rgb(52, 54, 0) 100%
+  );
+  backdrop-filter: blur(10px);
+  box-shadow: 4px 0 10px rgba(255, 255, 255, 0.632) !important; /* Soft shadow for depth */
+}
+
+.sidebar {
+  background: linear-gradient(
+    to bottom,
+    rgba(25, 25, 25, 1) 0%,
+    rgb(43, 40, 1) 50%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.429) !important;
+  position: fixed;
+  left: 0;
+  height: 100%;
+  width: 150px;
+  top: 50px;
+  z-index: 3;
+  /* border-right:solid 1px yellow ; */
+}
+
+.menu ul li a:hover,
+.menu ul li a:focus,
+.menu ul li a:active {
+  background: rgba(65, 53, 1, 0.69);
+  color: #fff;
+}
+.menu ul li a.active {
+  background: rgba(65, 53, 1, 0.69);
+  color: #fff;
+}
+.menu ul li a.active i {
+  color: #ffb700;
+}
+.menu ul li a i {
+  color: #fff;
+  font-size: 24px;
+}
+</style>
 

@@ -1,6 +1,6 @@
 <template>
   <DeshboardLayout>
-    <div>
+    <div class="">
       <div class="page_title">
         <div class="container-fluid">
           <div class="row">
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="content-body">
+
         <div class="container-fluid">
           <div class="row">
             <div class="col-xl-3 col-lg-4 col-xxl-4">
@@ -406,7 +406,7 @@
               </div>
             </div>
           </div>
-        </div>
+
       </div>
     </div>
 
