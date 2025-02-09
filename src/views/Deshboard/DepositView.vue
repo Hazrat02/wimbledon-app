@@ -35,12 +35,39 @@
                       :class="{ 'active show': page === 'deposit' }"
                     >
                       <form class="currency_validate"  @submit.prevent="depositNow">
+                       
                         <div class="mb-3">
-                          <label class="me-sm-2">Account Category</label>
+                          <label class="me-sm-2">Payment Method</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="cc BTC-alt fa fa-address-card" style="font-size: 38px;"></i
+                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
+                              ></label>
+                            </div>
+
+                            <select
+                  class="form-control"
+                
+                  v-model="method"
+                  required
+                >
+                  <option selected disabled>Select</option>
+                  <option value="BINANCE">BINANCE</option>
+                  <option value="MUDREX">MUDREX</option>
+                  <option value="TRUST WALLET">TRUST WALLET</option>
+                  <option value="BIT PAY">BIT PAY</option>
+           
+                </select>
+                            
+                          </div>
+                        </div>
+
+                        <div class="mb-3">
+                          <label class="me-sm-2">Select Network - (USDT)</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i class="cc BTC-alt fa fa-network-wired" style="font-size: 38px;"></i
                               ></label>
                             </div>
                             <select
@@ -50,49 +77,38 @@
                               v-model="address"
                             >
                               <option selected disabled>Select</option>
-                              <option value="Wallet">
-                                Wallet Account (${{ authUser.main_balance }})
+                              <option value="trc-20">
+                               TRON (TRC-20)
                               </option>
-                              <option value="Live">
-                                Live Account (${{ authUser.live_balance }})
+                              <option value="BNB Smart Chain (BEP20)">
+                               BNB Smart Chain (BEP20)
+                              </option>
+                              <option value="Ethereum (ERC-20)">
+                               Ethereum (ERC-20)
+                              </option>
+                              <option value="Solana">
+                                Solana
+                              </option>
+                              <option value="The Open Network (TON)">
+                                The Open Network (TON)
+                              </option>
+                              <option value="Optimism">
+                                Optimism
                               </option>
                             </select>
                           </div>
                         </div>
 
-                        <div class="mb-3">
-                          <label class="me-sm-2">Payment Method</label>
-                          <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text"
-                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
-                              ></label>
-                            </div>
-                            <select
-                  class="form-control"
-                
-                  v-model="method"
-                  required
-                >
-                  <option selected disabled>Select</option>
-                  <option value="btc">Bitcoin</option>
-                  <option value="bnb">BNB</option>
-                  <option value="ltc">Lite Coin</option>
-                  <option value="Trust Wallet">Trust Wallet</option>
-                  <option value="Bit Pay">Bit Pay</option>
-                </select>
-                            
-                          </div>
-                        </div>
 
                         <div class="mb-3">
                           <label class="me-sm-2"> Deposit Amount</label>
                           <div class="input-group">
-                            <input
+                            <input required
                               type="number"
                              v-model="amount"
                               class="form-control"
                               placeholder="Enter Your Amount."
+                              min="10"
                             />
                             <input
                               type="text"
@@ -118,12 +134,38 @@
                       :class="{ 'active show': page === 'withdraw' }"
                     >
                     <form class="currency_validate"  @submit.prevent="withdrawNow">
-                        <div class="mb-3">
-                          <label class="me-sm-2">Account Category</label>
+                      <div class="mb-3">
+                          <label class="me-sm-2">Payment Method</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
-                                ><i class="cc BTC-alt fa fa-address-card" style="font-size: 38px;"></i
+                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
+                              ></label>
+                            </div>
+
+                            <select
+                  class="form-control"
+                
+                  v-model="method"
+                  required
+                >
+                  <option selected disabled>Select</option>
+                  <option value="BINANCE">BINANCE</option>
+                  <option value="MUDREX">MUDREX</option>
+                  <option value="TRUST WALLET">TRUST WALLET</option>
+                  <option value="BIT PAY">BIT PAY</option>
+           
+                </select>
+                            
+                          </div>
+                        </div>
+
+                        <div class="mb-3">
+                          <label class="me-sm-2">Select Network - (USDT)</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i class="cc BTC-alt fa fa-network-wired" style="font-size: 38px;"></i
                               ></label>
                             </div>
                             <select
@@ -133,40 +175,28 @@
                               v-model="address"
                             >
                               <option selected disabled>Select</option>
-                              <option value="Wallet">
-                                Wallet Account (${{ authUser.main_balance }})
+                              <option value="trc-20">
+                               TRON (TRC-20)
                               </option>
-                              <option value="Live">
-                                Live Account (${{ authUser.live_balance }})
+                              <option value="BNB Smart Chain (BEP20)">
+                               BNB Smart Chain (BEP20)
+                              </option>
+                              <option value="Ethereum (ERC-20)">
+                               Ethereum (ERC-20)
+                              </option>
+                              <option value="Solana">
+                                Solana
+                              </option>
+                              <option value="The Open Network (TON)">
+                                The Open Network (TON)
+                              </option>
+                              <option value="Optimism">
+                                Optimism
                               </option>
                             </select>
                           </div>
                         </div>
 
-                        <div class="mb-3">
-                          <label class="me-sm-2">Payment Method</label>
-                          <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text"
-                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
-                              ></label>
-                            </div>
-                            <select
-                  class="form-control"
-                
-                  v-model="method"
-                  required
-                >
-                  <option selected disabled>Select</option>
-                  <option value="btc">Bitcoin</option>
-                  <option value="bnb">BNB</option>
-                  <option value="ltc">Lite Coin</option>
-                  <option value="Trust Wallet">Trust Wallet</option>
-                  <option value="Bit Pay">Bit Pay</option>
-                </select>
-                            
-                          </div>
-                        </div>
 
                         <div class="mb-3">
                           <label class="me-sm-2"> Deposit Amount</label>
@@ -176,6 +206,7 @@
                              v-model="amount"
                               class="form-control"
                               placeholder="Enter Your Amount."
+                              min="10"
                             />
                             <input
                               type="text"
@@ -221,26 +252,11 @@
                         />
                         <div class="flex-grow-1">
                           <h4>Balance</h4>
-                          <h5>Main Wallet</h5>
                           <a >{{ authUser.main_balance }} $</a>
                         </div>
                       </div>
                     </div>
-                    <div class="seller-info text-end">
-                      <div class="d-flex align-items-center">
-                        <div class="flex-grow-1">
-                          <h4>Balance</h4>
-                          <h5>Live Wallet</h5>
-                          <a>{{authUser.live_balance}} $</a>
-                        </div>
-                        <img style="border-radius: 10px;"
-                          class="ms-3"
-                          src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRr1UFDxfwDlcZ7nQdOhOc8lz4IrfVwTAN7gcigohmGr_kqrksw"
-                          alt=""
-                          width="50"
-                        />
-                      </div>
-                    </div>
+                   
                   </div>
                   <div class="table-responsive">
                     <table class="table">

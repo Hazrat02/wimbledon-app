@@ -1,13 +1,15 @@
 <template>
+            <HomeLayout>
+
   <body>
     <div id="main-wrapper">
       <div class="authincation section-padding">
         <div class="container h-100">
           <div class="row justify-content-center h-100 align-items-center">
-            <div class="col-xl-5 col-md-6">
+            <div class="col-lg-8 col-xl-6">
               <div class="mini-logo text-center my-5">
             
-                <!-- <img src="./images/m_logo.png" alt="" /> -->
+                <img src="./../../../public/logo1.png" alt="" style="width: 150px;" />
               </div>
               <div class="auth-form card">
                 <div class="card-header justify-content-center">
@@ -39,12 +41,19 @@
                         name="password"
                       />
                     </div>
-                    <div class="row d-flex justify-content-between mt-4 mb-2">
-                      <div class="mb-3 mb-0">
+                    <div class="d-flex justify-content-between mt-4 mb-2">
+                      <div class="">
                         <label class="toggle">
                           <input class="toggle-checkbox" v-model="showPassword" type="checkbox" />
                           <div class="toggle-switch"></div>
                           <span class="toggle-label">Show Password</span>
+                        </label>
+                      </div>
+                      <div class="">
+                        <label class="toggle">
+                          
+                    
+                          <router-link to="/forget" class="toggle-label">forgot password</router-link>
                         </label>
                       </div>
                     </div>
@@ -156,6 +165,7 @@
       <!--endRemoveIf(production)-->
     </div>
   </body>
+  </HomeLayout>
 </template>
 
 

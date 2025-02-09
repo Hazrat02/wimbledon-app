@@ -72,12 +72,12 @@
 
                 <div class="d-flex justify-content-between my-4">
                   <div>
-                    <p class="mb-1">Main wallet</p>
-                    <h4>{{ Number(authUser.main_balance)  }} USD</h4>
+                    <p class="mb-1">0x8****************0</p>
+                    <h4>Withdraw Address</h4>
                   </div>
                   <div>
-                    <p class="mb-1">Live wallet</p>
-                    <h4>{{  Number(authUser.live_balance) }} USD</h4>
+                    <p class="mb-1">************</p>
+                    <h4>Network</h4>
                   </div>
                 </div>
 
@@ -350,8 +350,12 @@ export default {
     passwordFieldType() {
       return this.showPassword ? "text" : "password";
     },
+
+    
    
   },
+
+  
 
 
   async created() {

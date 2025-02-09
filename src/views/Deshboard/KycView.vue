@@ -1,7 +1,8 @@
 <template>
 
     <DeshboardLayout>
-      <div class="content-body">
+      <div class="page_title"></div>
+      <div class="content-body mt-5">
         <div class="container-fluid">
           <h2 class=" mb-0">Upload Documents</h2>
         </div>
@@ -10,14 +11,14 @@
         <div class="container-fluid ">
           <div class="row gy-4 ">
             <div class="col-lg-8">
-              <div class="card bg-secondary">
+              <div class="card" >
                 <div class="card-header">
                   <h3 class="h4 mb-0">I want to upload</h3>
                 </div>
                 <div class="card-body pt-0">
                   <form class="row g-3 align-items-center " enctype="multipart/form-data"
                         @submit.prevent="kyc">
-                    <div class="col-lg-8">
+                    <div class="xxx">
                       <label class="visually-hidden" for="inlineFormSelectPref"
                         >Preference</label
                       >
@@ -36,11 +37,11 @@
 
                     <!-- id -->
                     <div>
-                      <div v-if="selectValue == 'id'">
-                        <div class="">
+                      <div v-if="selectValue == 'id'" class="xxx">
+                 
                           <label class="" for="type">Type</label>
                           <select
-                            class="form-select"
+                            class="form-control"
                             id="type"
                             v-model="selectIdValue"
                           >
@@ -52,16 +53,16 @@
                             <option value="id">Driving Licence</option>
                             <option value="id">Other</option>
                           </select>
-                        </div>
+        
                       </div>
 
                       
                       <div v-if="selectIdValue == 'id' && selectValue == 'id'">
-                        <div class="col-lg-8">
+                        <div class="xxx">
                           <label class="" for="Front">Front Side</label>
                           <input class="form-control" id="Front" type="file"  @change="frontimage" />
                         </div>
-                        <div class="col-lg-8">
+                        <div class="xxx">
                           <label class="" for="Front">Back Side</label>
                           <input class="form-control" id="back" type="file"  @change="backimage"/>
                         </div>
@@ -71,10 +72,10 @@
 
                     <!-- address -->
                     <div v-if="selectValue == 'address'">
-                      <div class="col-lg-8">
+                      <div class="xxx">
                         <label class="" for="country">Country</label>
                         <select
-                          class="form-select"
+                          class="form-control"
                           id="country"
                           v-model="country"
                         >
@@ -408,25 +409,25 @@
                       </div>
 
                      
-                      <div class="col-lg-8">
+                      <div class="xxx">
                         <label class="" for="city">City</label>
                         <input class="form-control" id="city" type="text" v-model="city" placeholder="Enter Your city" />
                       </div>
-                      <div class="col-lg-8">
+                      <div class="xxx">
                         <label class="" for="Address">Address</label>
                         <input class="form-control" id="Address" type="text" v-model="address" placeholder="Enter Your Address" />
                       </div>
-                      <div class="col-lg-8">
+                      <div class="xxx">
                         <label class="" for="Postal">Postal Code</label>
                         <input class="form-control" id="Postal Code" type="text" v-model="postel" placeholder="Enter Code" />
                       </div>
    
-                      <div class="col-lg-8">
+                      <div class="xxx">
                         <label class="" for="file">File</label>
                         <input class="form-control" id="file" type="file"  @change="fileimage"/>
                       </div>
                     </div>
-                    <div v-if="selectValue == 'other' || selectValue == 'selfie' "> <div class="col-lg-8">
+                    <div v-if="selectValue == 'other' || selectValue == 'selfie' "> <div class="xxx">
                         <label class="" for="file">File</label>
                         <input class="form-control" id="file" type="file"  @change="fileimage" />
                       </div>
@@ -443,23 +444,23 @@
             </div>
             <!-- Modal Form-->
             <div class="col-lg-4">
-              <div class="card bg-secondary mb-4 mb-lg-0 ">
-                <div class="card-body  p-0">
+              <div class="card mb-4 mb-lg-0 ">
+                <div class="card-body p-0">
                   <ul class="list-group list-group-flush rounded-3">
                     <li
-                      class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      class="d-flex justify-content-between align-items-center p-3"
                     >
                       <p class="text-warning">{{authUser.id_kyc}}</p>
                       <p class="mb-0">Proof of ID approved</p>
                     </li>
                     <li
-                      class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      class=" d-flex justify-content-between align-items-center p-3"
                     >
                     <p class="text-success">{{authUser.ad_kyc}}</p>
                       <p class="mb-0"> Proof of Address approved</p>
                     </li>
                     <li
-                      class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      class=" d-flex justify-content-between align-items-center p-3"
                     >
                       <p
                         style="color: #55acee"
@@ -625,3 +626,7 @@ export default {
 };
 </script>
 
+<style scoped>
+
+
+</style>

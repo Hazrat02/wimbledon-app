@@ -17,7 +17,7 @@ import AccountView from '../views/Deshboard/AccountView.vue'
 
 import LoginComponent from './../views/auth/Login.vue';
 import RegisterComponent from '../views/auth/Register.vue';
-
+import ForgetComponent from '../views/auth/Forget.vue' 
 import authenticated from '../midleware/auth.js';
 import { logout } from "../midleware/auth.js";
 import { setloading } from '../utils/extra'
@@ -51,6 +51,17 @@ const router = createRouter({
       component:RegisterComponent,
       meta:{
         requiresGuest:true,
+      },
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component:ForgetComponent,
+      meta:{
+        // Layout:AuthLayout,
       },
     },
     

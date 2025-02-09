@@ -6,7 +6,7 @@
     <div
       v-if="this.$isLoading()"
       id="spinner"
-      style="background-color: #292444e1"
+      style="background-color:  rgba(168, 165, 165, 0.036)"
       class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
     >
       <div
@@ -26,23 +26,37 @@
               <nav
                 class="navbar navbar-expand-lg navbar-light px-0 justify-content-between"
               >
-                <div class="navbar-brand">
+              
+                <div class="navbar-brand menuIcon">
                   <i
-                    class="fa white menuIcon"
+                    class="fa white "
                     :class="{
                       'fa-bars': this.menuShow == false,
                       'fa-close': this.menuShow == true,
                     }"
-                    style="font-size: 30px; color: white"
+                    style="font-size: 30px; color: white;"
                     @click="menuIs"
                   ></i>
-                  <router-link to="/" class="navbar-brand">
-                    <span>Wimbledon</span></router-link
-                  >
+              
                 </div>
+                <router-link to="/" class="navbar-brand">
+                    <img
+                 
+                 src="./../../public/w.png"
+                 alt=""
+               />
+                    <span style="margin-left: 0%;">imbledon</span></router-link
+                  >
+                <!-- <router-link to="/" class="">
+                    
+                  <img
+                 style="width: 100px;"
+                 src="./../../public/logo1.png"
+                 alt="">
+               </router-link> -->
                 <div class="dashboard_log my-2">
                   <div class="d-flex align-items-center">
-                    <div class="account_money">
+                    <div class="account_money d-none d-md-block">
                       <ul>
                         <li class="usd">
                           <span
@@ -135,7 +149,7 @@
                   active: this.$route.path === '/account',
                 }"
               >
-                <span><i class="fa fa-user me-3"></i></span> INF.
+                <span><i class="fa fa-user me-3"></i></span> PRO.
               </router-link>
             </li>
             <li>
@@ -293,5 +307,8 @@ export default {
   color: #fff;
   font-size: 24px;
 }
+
+
+
 </style>
 

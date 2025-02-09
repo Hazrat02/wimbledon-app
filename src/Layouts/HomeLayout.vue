@@ -5,7 +5,7 @@
 
     <div
       v-if="this.$isLoading()"
-      id="spinner" style="background-color: #292444e1;"
+      id="spinner" style="background-color:  rgba(168, 165, 165, 0.036);"
       class="show  position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
     >
       <div

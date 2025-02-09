@@ -1,7 +1,10 @@
 <template>
   <DeshboardLayout>
+    <div class="page_title"></div>
+
+
     <div class="">
-      <div class="page_title">
+      <div class="d-none d-md-block">
         <div class="container-fluid">
           <div class="row">
             <div class="col-xl-12">
@@ -39,33 +42,24 @@
                       <li class="d-flex">
                         <i class="cc BTC me-3"></i>
                         <div class="flex-grow-1">
-                          <h5 class="m-0">Main wallet</h5>
+                          <h5 class="m-0">Total Withdrawals</h5>
                         </div>
                         <div class="text-end">
-                          <h5>{{ Number(authUser.main_balance) }}</h5>
+                          <h5>{{ sumtrx }}</h5>
                           <span>USD</span>
                         </div>
                       </li>
                       <li class="d-flex">
                         <i class="cc LTC me-3"></i>
                         <div class="flex-grow-1">
-                          <h5 class="m-0">Live Wallet</h5>
+                          <h5 class="m-0">Total Deposit</h5>
                         </div>
                         <div class="text-end">
-                          <h5>{{ Number(authUser.live_balance) }}</h5>
+                          <h5>{{ sumDeptrx }}</h5>
                           <span>USD</span>
                         </div>
                       </li>
-                      <li class="d-flex">
-                        <i class="cc XRP me-3"></i>
-                        <div class="flex-grow-1">
-                          <h5 class="m-0">Ripple</h5>
-                        </div>
-                        <div class="text-end">
-                          <h5>0.000242 XRP</h5>
-                          <span>0.125 USD</span>
-                        </div>
-                      </li>
+                     
                     </ul>
                   </div>
                 </div>
@@ -75,39 +69,46 @@
             <div class="col-xl-6 col-lg-8 col-xxl-8">
               <div class="card profile_chart">
                 <div class="card-header py-0">
-                  <div class="chart_current_data">
-                    <h3>254856 <span>USD</span></h3>
-                    <p class="text-success">125648 <span>USD (20%)</span></p>
-                  </div>
+                  
                   <div class="duration-option">
                     <a
                       id="all"
-                      @click.prevent="updateChart('one_month')"
-                      class="active"
+                      @click.prevent="updateChart('0')" :class="{
+                  active: this.button === '0',
+                }"
+                     
                       >ALL</a
                     >
-                    <a id="one_month" class="">1M</a>
-                    <a id="six_months">6M</a>
-                    <a id="one_year" class="">1Y</a>
-                    <a id="ytd" class="">YTD</a>
+                    <a   @click.prevent="updateChart('1')" class="" :class="{
+                  active: this.button === '1',
+                }">1M</a>
+                    <a  @click.prevent="updateChart('2')" :class="{
+                  active: this.button === '2',
+                }">6M</a>
+                    <a  @click.prevent="updateChart('3')" :class="{
+                  active: this.button === '3',
+                }">1Y</a>
+                    <a  @click.prevent="updateChart('4')" :class="{
+                  active: this.button === '4',
+                }" class="d-none d-md-inline">YTD</a>
                   </div>
                 </div>
                 <div class="card-body">
                   <!-- <div id="timeline-chart"></div> -->
                   <canvas id="timeline-chart"></canvas>
                   <!-- <canvas ref="chartCanvas" id="timeline-chart"></canvas> -->
-                  <div class="chart-content text-center">
+                  <div class="chart-content text-center mt-2">
                     <div class="row">
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
-                          <p class="mb-2">Total Withdrawals</p>
-                          <h4 class="mb-0">${{ sumtrx }}</h4>
+                          <p class="mb-2">Pending Withdrawals</p>
+                          <h4 class="mb-0">${{ pensumtrx }}</h4>
                         </div>
                       </div>
                       <div class="col-xl-3 col-sm-6 col-6">
                         <div class="chart-stat">
-                          <p class="mb-2">Total Deposit</p>
-                          <h4 class="mb-0">${{ sumDeptrx }}</h4>
+                          <p class="mb-2">Pending Deposit</p>
+                          <h4 class="mb-0">${{ pensumDeptrx }}</h4>
                         </div>
                       </div>
                     </div>
@@ -115,103 +116,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-12 col-xxl-12">
-              <div class="card">
-                <div class="card-header border-0 py-0">
-                  <h4 class="card-title">Follow</h4>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-xl-12 col-lg-6 col-xxl-6">
-                      <div class="widget-card">
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <div class="widget-stat">
-                            <div class="coin-title">
-                              <span><i class="cc BTC-alt"></i></span>
-                              <h5 class="d-inline-block ms-2 mb-3">
-                                Bitcoin <span>(24h)</span>
-                              </h5>
-                            </div>
-                            <h4>
-                              USD 1254.36
-                              <span class="badge badge-success ms-2"
-                                >+ 06%</span
-                              >
-                            </h4>
-                          </div>
-                          <div id="btcChart"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-12 col-lg-6 col-xxl-6">
-                      <div class="widget-card">
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <div class="widget-stat">
-                            <div class="coin-title">
-                              <span><i class="cc ETH-alt"></i></span>
-                              <h5 class="d-inline-block ms-2 mb-3">
-                                Ethereum <span>(24h)</span>
-                              </h5>
-                            </div>
-                            <h4>
-                              USD 1254.36
-                              <span class="badge badge-danger ms-2">- 06%</span>
-                            </h4>
-                          </div>
-                          <div id="ltcChart"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-12 col-lg-6 col-xxl-6">
-                      <div class="widget-card">
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <div class="widget-stat">
-                            <div class="coin-title">
-                              <span><i class="cc LTC-alt"></i></span>
-                              <h5 class="d-inline-block ms-2 mb-3">
-                                Litecoin <span>(24h)</span>
-                              </h5>
-                            </div>
-                            <h4>
-                              USD 1254.36
-                              <span class="badge badge-primary ms-2"> 06%</span>
-                            </h4>
-                          </div>
-                          <div id="xrpChart"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-12 col-lg-6 col-xxl-6">
-                      <div class="widget-card">
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <div class="widget-stat">
-                            <div class="coin-title">
-                              <span><i class="cc XRP-alt"></i></span>
-                              <h5 class="d-inline-block ms-2 mb-3">
-                                Ripple <span>(24h)</span>
-                              </h5>
-                            </div>
-                            <h4>
-                              USD 1254.36
-                              <span class="badge badge-danger ms-2">- 06%</span>
-                            </h4>
-                          </div>
-                          <div id="dashChart"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          
           </div>
           <div class="row">
             <div class="col-xl-3 col-lg-4 col-xxl-4">
@@ -225,78 +130,90 @@
                       class="currency_validate"
                       @submit.prevent="depositNow"
                     >
-                      <div class="mb-3">
-                        <label class="me-sm-2">Account Category</label>
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <label class="input-group-text"
-                              ><i
-                                class="cc BTC-alt fa fa-address-card"
-                                style="font-size: 38px"
-                              ></i
-                            ></label>
-                          </div>
-                          <select
-                            class="form-control"
-                            id="Account"
-                            required
-                            v-model="address"
-                          >
-                            <option selected disabled>Select</option>
-                            <option value="Wallet">
-                              Wallet Account (${{ authUser.main_balance }})
-                            </option>
-                            <option value="Live">
-                              Live Account (${{ authUser.live_balance }})
-                            </option>
-                          </select>
-                        </div>
-                      </div>
+                    <div class="mb-3">
+                          <label class="me-sm-2">Payment Method</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
+                              ></label>
+                            </div>
 
-                      <div class="mb-3">
-                        <label class="me-sm-2">Payment Method</label>
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <label class="input-group-text"
-                              ><i
-                                class="fa fa-credit-card"
-                                style="font-size: 38px"
-                              ></i
-                            ></label>
+                            <select
+                  class="form-control"
+                
+                  v-model="method"
+                  required
+                >
+                  <option selected disabled>Select</option>
+                  <option value="BINANCE">BINANCE</option>
+                  <option value="MUDREX">MUDREX</option>
+                  <option value="TRUST WALLET">TRUST WALLET</option>
+                  <option value="BIT PAY">BIT PAY</option>
+           
+                </select>
+                            
                           </div>
-                          <select
-                            class="form-control"
-                            v-model="method"
-                            required
-                          >
-                            <option selected disabled>Select</option>
-                            <option value="btc">Bitcoin</option>
-                            <option value="bnb">BNB</option>
-                            <option value="ltc">Lite Coin</option>
-                            <option value="Trust Wallet">Trust Wallet</option>
-                            <option value="Bit Pay">Bit Pay</option>
-                          </select>
                         </div>
-                      </div>
 
-                      <div class="mb-3">
-                        <label class="me-sm-2"> Deposit Amount</label>
-                        <div class="input-group">
-                          <input
-                            type="number"
-                            v-model="amount"
-                            class="form-control"
-                            placeholder="Enter Your Amount."
-                          />
-                          <input
-                            type="text"
-                            name="usd_amount"
-                            class="form-control"
-                            placeholder="Min-10 USD"
-                            disabled
-                          />
+                        <div class="mb-3">
+                          <label class="me-sm-2">Select Network - (USDT)</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i class="cc BTC-alt fa fa-network-wired" style="font-size: 38px;"></i
+                              ></label>
+                            </div>
+                            <select
+                              class="form-control"
+                              id="Account"
+                              required
+                              v-model="address"
+                            >
+                              <option selected disabled>Select</option>
+                              <option value="trc-20">
+                               TRON (TRC-20)
+                              </option>
+                              <option value="BNB Smart Chain (BEP20)">
+                               BNB Smart Chain (BEP20)
+                              </option>
+                              <option value="Ethereum (ERC-20)">
+                               Ethereum (ERC-20)
+                              </option>
+                              <option value="Solana">
+                                Solana
+                              </option>
+                              <option value="The Open Network (TON)">
+                                The Open Network (TON)
+                              </option>
+                              <option value="Optimism">
+                                Optimism
+                              </option>
+                            </select>
+                          </div>
                         </div>
-                      </div>
+
+
+                        <div class="mb-3">
+                          <label class="me-sm-2"> Deposit Amount</label>
+                          <div class="input-group">
+                            <input
+                              type="number"
+                             v-model="amount"
+                              class="form-control"
+                              placeholder="Enter Your Amount."
+                              min="10"
+                            />
+                            <input
+                              type="text"
+                              name="usd_amount"
+                              class="form-control"
+                              placeholder="Min-10 USD"
+                              disabled
+                            />
+                          </div>
+                         
+                        </div>
                       <button
                         type="submit"
                         name="submit"
@@ -370,7 +287,7 @@
                               {{ transactionItem.method }}
                             </td>
                             <td>
-                              Using - {{ transactionItem.address }} wallet
+                              Using - {{ transactionItem.address }} Network
                             </td>
                             <td
                               class=""
@@ -426,6 +343,7 @@ import { RouterLink } from "vue-router";
 export default {
   data() {
     return {
+      button:'0',
       authUser: [],
       page: "deposit",
 
@@ -434,25 +352,22 @@ export default {
       method: "Select",
       transactions: [],
       chart: null,
-      chartData: {
-        labels: this.generateLabels(30),
-        datasets: [
-          {
-            label: "Buy",
-            data: this.generateData(30),
-            borderColor: "#7B6FFF",
-            backgroundColor: "rgba(123, 111, 255, 0.5)",
-            fill: true,
-          },
-          {
-            label: "Sell",
-            data: this.generateData(30),
-            borderColor: "#1652F0",
-            backgroundColor: "rgba(22, 82, 240, 0.5)",
-            fill: true,
-          },
-        ],
-      },
+      datasets: [
+            {
+              label: "REIT",
+              data: [],
+              borderColor: "#7B6FFF",
+              backgroundColor: "rgba(123, 111, 255, 0.5)",
+              fill: true,
+            },
+            {
+              label: "ETFs",
+              data: [],
+              borderColor: "#1652F0",
+              backgroundColor: "rgba(22, 82, 240, 0.5)",
+              fill: true,
+            },
+          ],
     };
   },
   methods: {
@@ -558,12 +473,25 @@ export default {
     //   );
     // },
     generateData(count) {
-      return Array.from({ length: count }, () => {
-        return Math.min(Math.max(Math.random() * 10, 0), 10);
-      });
+      return Array.from({ length: count }, () => Math.random() * 10);
     },
+    updateChart(number) {
+
+      if (this.chartInstance) {
+      // Update datasets with new data
+      this.chartInstance.data.datasets[0].data = this.generateData(30);
+      this.chartInstance.data.datasets[1].data = this.generateData(30);
+      this.button = number;
+      // Refresh the chart
+      this.chartInstance.update();
+    
+
+    }
+   
+  },
   },
   computed: {
+   
     sumtrx() {
       // Filter withdraw transactions with status success and calculate the sum
       const withdrawSuccessTransactions = Object.values(
@@ -598,74 +526,52 @@ export default {
 
       return sum;
     },
-    lastWithdrawCreatedAt() {
-      // Filter withdraw transactions with status success
+    pensumtrx() {
+      // Filter withdraw transactions with status success and calculate the sum
       const withdrawSuccessTransactions = Object.values(
         this.transactions
       ).filter(
         (transaction) =>
-          transaction.type === "Withdraw" && transaction.status === "success"
+          transaction.type === "Withdraw" && transaction.status === "pending"
       );
 
-      // If there are no successful withdraw transactions, return '00-00-0000'
-      if (withdrawSuccessTransactions.length === 0) {
-        return "00-00-0000";
-      }
-
-      // Sort the transactions by created_at in descending order
-      const sortedTransactions = withdrawSuccessTransactions.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      // Use reduce to calculate the sum
+      const sum = withdrawSuccessTransactions.reduce(
+        (total, transaction) => total + transaction.amount,
+        0
       );
 
-      // Get the created_at value of the first transaction (latest one)
-      const lastWithdrawCreatedAt = new Date(sortedTransactions[0].created_at);
-
-      // Format the date to 'MM-DD-YYYY'
-      const formattedDate = lastWithdrawCreatedAt.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
-
-      return formattedDate;
+      return sum;
     },
-    lastDepositCreatedAt() {
-      // Filter withdraw transactions with status success
+    pensumDeptrx() {
+      // Filter withdraw transactions with status success and calculate the sum
       const withdrawSuccessTransactions = Object.values(
         this.transactions
       ).filter(
         (transaction) =>
-          transaction.type === "deposit" && transaction.status === "success"
+          transaction.type === "deposit" && transaction.status === "pending"
       );
 
-      // If there are no successful withdraw transactions, return '00-00-0000'
-      if (withdrawSuccessTransactions.length === 0) {
-        return "00-00-0000";
-      }
-
-      // Sort the transactions by created_at in descending order
-      const sortedTransactions = withdrawSuccessTransactions.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      // Use reduce to calculate the sum
+      const sum = withdrawSuccessTransactions.reduce(
+        (total, transaction) => total + transaction.amount,
+        0
       );
 
-      // Get the created_at value of the first transaction (latest one)
-      const lastWithdrawCreatedAt = new Date(sortedTransactions[0].created_at);
-
-      // Format the date to 'MM-DD-YYYY'
-      const formattedDate = lastWithdrawCreatedAt.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
-
-      return formattedDate;
+      return sum;
     },
+
   },
   mounted() {
-    // Single Line Chart
+    // Initialize the chart data before creating the chart
+  this.datasets[0].data = this.generateData(30);
+  this.datasets[1].data = this.generateData(30);
+
+  // Wait for DOM updates, then initialize the chart
+  this.$nextTick(() => {
     var ctx2 = document.getElementById("timeline-chart");
     if (ctx2) {
-      new Chart(ctx2, {
+      this.chartInstance = new Chart(ctx2, {
         type: "line",
         data: {
           labels: [
@@ -682,29 +588,16 @@ export default {
             "November",
             "December",
           ],
-
-          datasets: [
-            {
-              label: "Buy",
-              data: this.generateData(30),
-              borderColor: "#7B6FFF",
-              backgroundColor: "rgba(123, 111, 255, 0.5)",
-              fill: true,
-            },
-            {
-              label: "Sell",
-              data: this.generateData(30),
-              borderColor: "#1652F0",
-              backgroundColor: "rgba(22, 82, 240, 0.5)",
-              fill: true,
-            },
-          ],
+          datasets: this.datasets,
         },
         options: {
           responsive: true,
         },
       });
     }
+  });
+
+
   },
   async created() {
     const userStore = useAuthUserStore();

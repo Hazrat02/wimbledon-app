@@ -4767,7 +4767,11 @@ fieldset:disabled .btn {
 .navbar-dark .navbar-text a:focus {
   color: #fff;
 }
+.card{
 
+  background: rgba(168, 165, 165, 0.036) !important;
+  padding: 10px;
+}
 .card {
   position: relative;
   display: flex;
@@ -12537,7 +12541,7 @@ h6,
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: inline-block;
-  margin-right: 15px;
+  margin-right: 5px;
   background: #7b6fff;
   color: #fff;
   text-align: center;
@@ -12549,7 +12553,7 @@ h6,
 }
 
 .profile_log .user .name {
-  margin-right: 30px;
+  margin-right: 10px;
   font-size: 18px;
   font-weight: 500;
   color: #fff;
@@ -12574,7 +12578,7 @@ h6,
 .profile_log .user .arrow i {
   font-weight: bold;
   font-size: 16px;
-  line-height: 16px;
+  /* line-height: 16px; */
   margin-top: 6px;
   display: inline-block;
 }
