@@ -498,7 +498,7 @@ export default {
         this.transactions
       ).filter(
         (transaction) =>
-          transaction.type === "Withdraw" && transaction.status === "success"
+          transaction.type === "withdraw" && transaction.status === "success"
       );
 
       // Use reduce to calculate the sum
@@ -532,7 +532,7 @@ export default {
         this.transactions
       ).filter(
         (transaction) =>
-          transaction.type === "Withdraw" && transaction.status === "pending"
+          transaction.type === "withdraw" && transaction.status === "pending"
       );
 
       // Use reduce to calculate the sum

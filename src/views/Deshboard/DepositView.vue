@@ -370,7 +370,7 @@ export default {
         address: this.address,
       };
 
-      if (this.address === "Wallet" || this.address === "wallet") {
+  
         if (this.amount > this.authUser.main_balance) {
           this.$setLoading(false);
           this.$notify({
@@ -409,46 +409,7 @@ export default {
               });
             });
         }
-      } else {
-        if (this.amount > this.authUser.live_balance) {
-          this.$setLoading(false);
-          this.$notify({
-            title: "message",
-            text: `Your balance is too low. Current balance: ${this.authUser.live_balance} $`,
-            type: "error",
-          });
-        } else {
-          await axios
-            .post("api/deposit", data)
-            .then((response) => {
-              this.$setLoading(false);
-              this.authUser.live_balance=this.authUser.live_balance - this.amount;
-                
 
-              this.$router.push("/transaction");
-
-              // transactionStore===================================
-
-              this.$notify({
-                title: "message",
-                text: response.data.message,
-                type: "success",
-              });
-              const getTransaction = transactionStore();
-
-              getTransaction.addTransaction(response.data);
-            })
-            .catch((error) => {
-              // Handle the error
-              this.$setLoading(false);
-              this.$notify({
-                title: "Error message",
-                text: error.response.data.message,
-                type: "error",
-              });
-            });
-        }
-      }
     },
   },
 
