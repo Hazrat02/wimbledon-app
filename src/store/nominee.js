@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const useNomineeStore = defineStore("nominee", {
   state: () => ({
-    nominee: "",
+    nominee: null,
    
     
   }),
@@ -21,9 +21,12 @@ export const useNomineeStore = defineStore("nominee", {
         const response = await axios.get(
           "/api/nominee"
         );
-        this.setlead(response.data);
-        return response.data; // Return the fetched data
+
+        this.setlead(response.data.data);
+        return response.data.data; // Return the fetched data
       } catch (error) {
+
+        console.log(error)
       }
     },
    

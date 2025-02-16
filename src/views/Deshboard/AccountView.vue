@@ -279,7 +279,7 @@
                     <h4 class="card-title">Nominee Information</h4>
                   </div>
                   <div class="card-body">
-                    <form @submit.prevent="userUpdate">
+                    <form @submit.prevent="nomineeSave">
                       <div class="row">
                         <div class="mb-3 col-xl-6">
                           <label class="me-sm-2">Name</label>
@@ -313,7 +313,7 @@
                           />
                         </div>
 
-                        <div class="mb-3 col-xl-12">
+                        <!-- <div class="mb-3 col-xl-12">
                           <div class="d-flex align-items-center mb-3">
                             <img
                               v-if="authUser.profile"
@@ -348,7 +348,7 @@
                               @change="image"
                             />
                           </div>
-                        </div>
+                        </div> -->
                        
                         <div class="mb-3 col-12">
                           <button class="btn btn-success ps-5 pe-5">
@@ -382,6 +382,7 @@ export default {
     return {
       showPassword: false,
       authUser: [],
+      nominee: [],
       checkbox: "",
       password: "",
       password_confirmation: "",
@@ -389,6 +390,16 @@ export default {
       name:"",
       birth: "",
       phone: "",
+      Nphone: "46",
+      Nname: "rte",
+      Nemail: "et@adas",
+      Ncity: "tete",
+      idback: "ert",
+      idfont: "se",
+      Nfile: "fsf",
+      Npostal: "sfs",
+      Ncountry: "sfs",
+      Naddress: "sfs",
       
     };
   },
@@ -433,6 +444,48 @@ export default {
 
       this.$setLoading(false);
     },
+    async nomineeSave() {
+      this.$setLoading(true);
+
+      const formData = new FormData(); // Create a FormData object
+      formData.append("name", this.Nname);
+      formData.append("email", this.Nemail);
+      formData.append("phone", this.Nphone);
+      formData.append("address", this.Naddress);
+      formData.append("city", this.Ncity);
+      formData.append("id_font", this.idfont);
+      formData.append("id_back", this.idback);
+      formData.append("file", this.Nfile);
+      formData.append("country", this.Ncountry);
+      formData.append("postal", this.Npostal); // Append the file to the FormData object
+
+      await axios
+        .post("/api/nominee.store", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set content type for file upload
+          },
+        })
+        .then((response) => {
+          (this.nominee = response.data.data),
+            this.$notify({
+              title: "message",
+              text: response.data.message,
+              type: "success",
+            });
+
+            console.log(this.nominee)
+        })
+        .catch((error) => {
+          this.$setLoading(false);
+          this.$notify({
+            title: "Error message",
+            text: error.response.data.message,
+            type: "error",
+          });
+        });
+
+      this.$setLoading(false);
+    },
   },
   computed: {
     passwordFieldType() {
@@ -453,9 +506,16 @@ export default {
       const userStore = useAuthUserStore();
       const authUser = userStore.authUser;
       const nomineeStore = useNomineeStore();
-      console.log('dgd',nomineeStore.nomineeStore)
-     
 
+      if (nomineeStore.nominee) {
+        this.nominee = nomineeStore.nominee;
+    } else {
+      // If data is not available, fetch it and set the component property
+      this.nominee = await nomineeStore.getlead();
+    }
+     
+     
+      console.log('df', this.nominee);
       if (authUser) {
         this.authUser = authUser;
       } else {
@@ -469,6 +529,7 @@ export default {
     this.birth = this.authUser.birth;
     this.phone = this.authUser.Phone;
     this.name = this.authUser.name;
+   
     this.$setLoading(false);
   },
 };
