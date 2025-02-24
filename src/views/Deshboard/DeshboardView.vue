@@ -32,8 +32,7 @@
                     <div class="total-balance">
                       <h3>
                         ${{
-                          Number(authUser.main_balance) +
-                          Number(authUser.live_balance)
+                          Number(authUser.main_balance)
                         }}
                       </h3>
                       <h6>Total Balance</h6>
@@ -119,114 +118,8 @@
           
           </div>
           <div class="row">
-            <div class="col-xl-3 col-lg-4 col-xxl-4">
-              <div class="card">
-                <div class="card-header border-0 py-0">
-                  <h4 class="card-title">Transaction</h4>
-                </div>
-                <div class="card-body">
-                  <div class="buy-sell-widget">
-                    <form
-                      class="currency_validate"
-                      @submit.prevent="depositNow"
-                    >
-                    <div class="mb-3">
-                          <label class="me-sm-2">Payment Method</label>
-                          <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text"
-                                ><i class="fa fa-credit-card" style="font-size: 38px;"></i
-                              ></label>
-                            </div>
-
-                            <select
-                  class="form-control"
-                
-                  v-model="method"
-                  required
-                >
-                  <option selected disabled>Select</option>
-                  <option value="BINANCE">BINANCE</option>
-                  <option value="MUDREX">MUDREX</option>
-                  <option value="TRUST WALLET">TRUST WALLET</option>
-                  <option value="BIT PAY">BIT PAY</option>
-           
-                </select>
-                            
-                          </div>
-                        </div>
-
-                        <div class="mb-3">
-                          <label class="me-sm-2">Select Network - (USDT)</label>
-                          <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text"
-                                ><i class="cc BTC-alt fa fa-network-wired" style="font-size: 38px;"></i
-                              ></label>
-                            </div>
-                            <select
-                              class="form-control"
-                              id="Account"
-                              required
-                              v-model="address"
-                            >
-                              <option selected disabled>Select</option>
-                              <option value="trc-20">
-                               TRON (TRC-20)
-                              </option>
-                              <option value="BNB Smart Chain (BEP20)">
-                               BNB Smart Chain (BEP20)
-                              </option>
-                              <option value="Ethereum (ERC-20)">
-                               Ethereum (ERC-20)
-                              </option>
-                              <option value="Solana">
-                                Solana
-                              </option>
-                              <option value="The Open Network (TON)">
-                                The Open Network (TON)
-                              </option>
-                              <option value="Optimism">
-                                Optimism
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-
-
-                        <div class="mb-3">
-                          <label class="me-sm-2"> Deposit Amount</label>
-                          <div class="input-group">
-                            <input
-                              type="number"
-                             v-model="amount"
-                              class="form-control"
-                              placeholder="Enter Your Amount."
-                              min="10"
-                            />
-                            <input
-                              type="text"
-                              name="usd_amount"
-                              class="form-control"
-                              placeholder="Min-10 USD"
-                              disabled
-                            />
-                          </div>
-                         
-                        </div>
-                      <button
-                        type="submit"
-                        name="submit"
-                        class="btn btn-success btn-block"
-                      >
-                        Deposit Now
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-9 col-lg-8 col-xxl-8">
+    
+            <div class="container">
               <div class="card">
                 <div class="card-header border-0 py-0">
                   <h4 class="card-title">Recent Activities</h4>

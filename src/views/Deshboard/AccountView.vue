@@ -63,25 +63,28 @@
           <div class="col-xl-6 col-lg-6 col-md-6">
             <div class="card acc_balance">
               <div class="card-header">
-                <h4 class="card-title">Wallet</h4>
+                <h4 class="card-title">Withdrawal Wallet</h4>
               </div>
               <div class="card-body">
                 <span>Total Balance</span>
                 <h3>
-                  {{
-                    Number(authUser.main_balance) +
-                    Number(authUser.live_balance)
-                  }}
+                  {{ Number(authUser.main_balance) }}
                   USD
                 </h3>
 
                 <div class="d-flex justify-content-between my-4">
                   <div>
-                    <p class="mb-1">0x8****************0</p>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.wallet }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
                     <h4>Withdraw Address</h4>
                   </div>
                   <div>
-                    <p class="mb-1">************</p>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.network }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
                     <h4>Network</h4>
                   </div>
                 </div>
@@ -124,7 +127,7 @@
                           <div class="d-flex align-items-center mb-3">
                             <img
                               v-if="authUser.profile"
-                              class="me-3 rounded-circle   me-sm-3"
+                              class="me-3 rounded-circle me-sm-3"
                               :src="authUser.profile"
                               width="55"
                               height="55"
@@ -293,8 +296,7 @@
                           <input
                             type="text"
                             class="form-control"
-
-                                       placeholder="Nominee Full Name"
+                            placeholder="Nominee Full Name"
                             v-model="Nname"
                           />
                         </div>
@@ -303,29 +305,27 @@
                           <label class="me-sm-2">Email</label>
                           <input
                             v-model="Nemail"
-                                       placeholder="Nominee Email"
+                            placeholder="Nominee Email"
                             type="email"
                             class="form-control"
-
                           />
                         </div>
 
                         <div class="mb-3 col-xl-6">
                           <label class="me-sm-2">Phone No.</label>
                           <input
-                            type="number"            placeholder="Nominee Phone No."
+                            type="number"
+                            placeholder="Nominee Phone No."
                             class="form-control"
                             v-model="Nphone"
                           />
                         </div>
                         <div class="mb-3 col-xl-6">
                           <label class="me-sm-2">Select Country</label>
-                          <select
-                            class="form-control"
-                        
-                            v-model="Ncountry"
-                          >
-                            <option selected disabled value="select">Select</option>
+                          <select class="form-control" v-model="Ncountry">
+                            <option selected disabled value="select">
+                              Select
+                            </option>
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
                             <option value="Algeria">Algeria</option>
@@ -675,7 +675,7 @@
                           <label class="me-sm-2">Address</label>
                           <input
                             type="text"
-                                       placeholder="Nominee Address"
+                            placeholder="Nominee Address"
                             class="form-control"
                             v-model="Naddress"
                           />
@@ -686,39 +686,33 @@
                             type="text"
                             class="form-control"
                             v-model="Ncity"
-                                       placeholder="Enter Nominee City"
+                            placeholder="Enter Nominee City"
                           />
                         </div>
                         <div class="mb-3 col-xl-6">
                           <label class="me-sm-2">Postal Code</label>
                           <input
                             type="number"
-                             placeholder="1234"
+                            placeholder="1234"
                             class="form-control"
                             v-model="Npostal"
                           />
                         </div>
 
-
                         <div class="mb-3 col-xl-6">
                           <label class="me-sm-2">Select Type</label>
-                          <select
-                            class="form-control"
-                        
-                            v-model="Ntype"
-                          >
-                            <option value="Select" disabled>Select </option>
+                          <select class="form-control" v-model="Ntype">
+                            <option value="Select" disabled>Select</option>
                             <option value="1">ID Proof</option>
                             <option value="2">Address Proof</option>
-                            
                           </select>
                         </div>
-                        
-                        <div class="mb-3 col-xl-12 " v-if="Ntype == 2">
-                          <div class="d-flex align-items-center mb-3" >
+
+                        <div class="mb-3 col-xl-12" v-if="Ntype == 2">
+                          <div class="d-flex align-items-center mb-3">
                             <img
                               v-if="Nfile"
-                              class="me-3 rounded-circle   me-sm-3"
+                              class="me-3 rounded-circle me-sm-3"
                               :src="Nfile"
                               width="55"
                               height="55"
@@ -750,11 +744,11 @@
                             />
                           </div>
                         </div>
-                        <div class="mb-3 col-xl-12 " v-if="Ntype == 1">
-                          <div class="d-flex align-items-center mb-3" >
+                        <div class="mb-3 col-xl-12" v-if="Ntype == 1">
+                          <div class="d-flex align-items-center mb-3">
                             <img
                               v-if="idfont"
-                              class="me-3 rounded-circle   me-sm-3"
+                              class="me-3 rounded-circle me-sm-3"
                               :src="idfont"
                               width="55"
                               height="55"
@@ -786,17 +780,18 @@
                             />
                           </div>
                         </div>
-                        <div class="mb-3 col-xl-12 " v-if="Ntype == 1">
-                          <div class="d-flex align-items-center mb-3" >
+                        <div class="mb-3 col-xl-12" v-if="Ntype == 1">
+                          <div class="d-flex align-items-center mb-3">
                             <img
                               v-if="idback"
-                              class="me-3 rounded-circle   me-sm-3"
+                              class="me-3 rounded-circle me-sm-3"
                               :src="idback"
                               width="55"
                               height="55"
                               alt="photo"
                             />
-                            <img style="background-color: white;"
+                            <img
+                              style="background-color: white"
                               v-else
                               lass="me-3 rounded-circle   me-sm-3"
                               src="https://icons.veryicon.com/png/o/miscellaneous/former-building-people/back-of-id-card.png"
@@ -832,6 +827,77 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-xl-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title">Withdrawal Information</h4>
+                  </div>
+                  <div class="card-body">
+                    <form @submit.prevent="setWallet">
+                      <div class="row">
+                        <div class="mb-3 col-xl-6">
+                          <label class="me-sm-2" for="Account"
+                            >Select Platform</label
+                          >
+                          <select
+                            class="form-control"
+                            id="Account"
+                            v-model="method"
+                            required
+                          >
+                            <option selected disabled>Select</option>
+                            <option
+                              v-for="(item, index) in allPlatform"
+                              :key="index"
+                              :value="item.name"
+                            >
+                              {{ item.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="mb-3 col-xl-6">
+                          <label class="me-sm-2" for="network">Network For USDT</label>
+                          <select
+                            class="form-control"
+                            id="network"
+                            v-model="network"
+                            required
+                          >
+                            <option selected disabled>Select</option>
+                            <option
+                              v-for="(net, index) in filteredNetworks"
+                              :key="index"
+                              :value="net.method"
+                            >
+                              {{ net.method }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="mb-3 col-xl-6">
+                          <label class="me-sm-2">Address</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Your Selected Network Address"
+                            v-model="address"
+                          />
+                        </div>
+
+
+                       
+
+                        <div class="mb-3 col-12">
+                          <button class="btn btn-success ps-5 pe-5">
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -840,8 +906,8 @@
   </DeshboardLayout>
 </template>
     
-  <script>
-import { RouterLink } from "vue-router";
+<script>
+
 
 import { useAuthUserStore } from "../../store/user";
 import { useNomineeStore } from "../../store/nominee";
@@ -851,6 +917,11 @@ import axios from "axios";
 export default {
   data() {
     return {
+      allPlatform: [],
+      allNetwork: [],
+      platform: "Select Platform",
+      network: "Select",
+      method: "Select",
       showPassword: false,
       authUser: [],
       nominee: [],
@@ -871,10 +942,12 @@ export default {
       Npostal: "",
       Ncountry: "select",
       Naddress: "",
-      Ntype: 'Select',
+      Ntype: "Select",
     };
   },
   methods: {
+
+
     image(event) {
       this.profile = event.target.files[0];
     },
@@ -884,7 +957,7 @@ export default {
     back_image(event) {
       this.idback = event.target.files[0];
     },
-  file_image(event) {
+    file_image(event) {
       this.Nfile = event.target.files[0];
     },
     async userUpdate() {
@@ -900,6 +973,40 @@ export default {
 
       await axios
         .post("/api/user/edit", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set content type for file upload
+          },
+        })
+        .then((response) => {
+          (this.authUser = response.data.user),
+            this.$notify({
+              title: "message",
+              text: response.data.message,
+              type: "success",
+            });
+        })
+        .catch((error) => {
+          this.$setLoading(false);
+          this.$notify({
+            title: "Error message",
+            text: error.response.data.message,
+            type: "error",
+          });
+        });
+
+      this.$setLoading(false);
+    },
+    async setWallet() {
+      this.$setLoading(true);
+
+      const formData = new FormData(); // Create a FormData object
+      formData.append("address", this.address);
+      formData.append("platform", this.method);
+      formData.append("network", this.network);
+      
+
+      await axios
+        .post("/api/address/edit", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Set content type for file upload
           },
@@ -966,7 +1073,14 @@ export default {
       this.$setLoading(false);
     },
   },
-  computed: {
+  computed: {  
+
+        filteredNetworks() {
+      // Find the selected platform and return its networks
+      const platform = this.allPlatform.find((p) => p.name == this.method);
+
+      return platform ? platform.network : [];
+    },
     passwordFieldType() {
       return this.showPassword ? "text" : "password";
     },
@@ -986,8 +1100,14 @@ export default {
         // If data is not available, fetch it and set the component property
         this.nominee = await nomineeStore.getlead();
       }
+      try {
+        const response = await axios.get("/api/platform");
 
-      console.log("df", this.nominee);
+        this.allPlatform = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+     
       if (authUser) {
         this.authUser = authUser;
       } else {
@@ -1001,17 +1121,18 @@ export default {
     this.phone = this.authUser.Phone;
     this.name = this.authUser.name;
 
-    this.Nname = this.nominee.name;
-    this.Nemail = this.nominee.email;
-    this.Nphone = this.nominee.Phone;
-    this.Ncountry = this.nominee.country;
-    this.Naddress = this.nominee.address;
-    this.Ncity = this.nominee.city;
-    this.Npostal = this.nominee.postal;
-    this.Nfile = this.nominee.file;
-    this.idfont = this.nominee.id_font;
-    this.idback = this.nominee.id_back;
-
+    if (this.nominee.name) {
+      this.Nname = this.nominee.name;
+      this.Nemail = this.nominee.email;
+      this.Nphone = this.nominee.Phone;
+      this.Ncountry = this.nominee.country;
+      this.Naddress = this.nominee.address;
+      this.Ncity = this.nominee.city;
+      this.Npostal = this.nominee.postal;
+      this.Nfile = this.nominee.file;
+      this.idfont = this.nominee.id_font;
+      this.idback = this.nominee.id_back;
+    }
 
     this.$setLoading(false);
   },
