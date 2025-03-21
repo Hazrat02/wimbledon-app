@@ -6,7 +6,7 @@
     <div
       v-if="this.$isLoading()"
       id="spinner"
-      style="background-color:  rgba(168, 165, 165, 0.036)"
+      style="background-color:  rgba(168, 165, 165, 0.036);z-index: 1;"
       class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
     >
       <div
@@ -45,7 +45,7 @@
                  src="./../../public/w.png"
                  alt=""
                />
-                    <span style="margin-left: 0%;">imbledon</span></router-link
+                    <span style="margin-left: 0%;">IMBLEDON</span></router-link
                   >
                 <!-- <router-link to="/" class="">
                     
@@ -127,7 +127,7 @@
                   active: this.$route.path === '/',
                 }"
               >
-                <span><i class="fa fa-igloo me-1"> </i></span> HOME
+                <span><i class="fa fa-igloo me-2"> </i></span> HOME
               </router-link>
             </li>
             <li>
@@ -139,7 +139,7 @@
                     this.$route.path === '/withdraw',
                 }"
               >
-                <span><i class="fa fa-exchange-alt me-3"></i></span> TRX
+                <span><i class="fa fa-exchange-alt me-0"></i></span> PAYMENT
               </router-link>
             </li>
             <li>
@@ -149,7 +149,7 @@
                   active: this.$route.path === '/account',
                 }"
               >
-                <span><i class="fa fa-user me-3"></i></span> PRO.
+                <span><i class="fa fa-user me-1"></i></span> PROFILE
               </router-link>
             </li>
             <li>

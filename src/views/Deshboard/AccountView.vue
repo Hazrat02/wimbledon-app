@@ -52,9 +52,11 @@
                   </li>
                   <li>
                     <h5 class="text-danger me-4">Join at</h5>
-                    <span class="text-danger">{{
+                    <span class="text-danger">
+                    {{
                       authUser.created_at.substring(0, 10)
-                    }}</span>
+                    }}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -1121,7 +1123,7 @@ export default {
     this.phone = this.authUser.Phone;
     this.name = this.authUser.name;
 
-    if (this.nominee.name) {
+    if (this.nominee) {
       this.Nname = this.nominee.name;
       this.Nemail = this.nominee.email;
       this.Nphone = this.nominee.Phone;

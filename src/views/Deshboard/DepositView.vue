@@ -4,8 +4,8 @@
 
     <div class="content-body">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-xl-5 col-lg-5 col-md-12">
+        <div class="row ">
+          <div class="container">
             <div class="card">
               <div class="card-body">
                 <div class="buy-sell-widget">
@@ -116,18 +116,7 @@
                             />
                           </div>
                         </div>
-                        <div class="mb-3">
-                          <label class="me-sm-2">TRXID</label>
-                          <div class="input-group">
-                            <input
-                              required
-                              type="text"
-                              v-model="trxid"
-                              class="form-control"
-                              placeholder="Enter Your TRXID."
-                            />
-                          </div>
-                        </div>
+                        
                         <button
                           type="submit"
                           name="submit"
@@ -284,136 +273,9 @@
                 </div>
               </div>
             </div>
-            <!-- <p class="p-4">
-              Note: Always double-check the wallet address before proceeding
-              with any transaction. Sending funds to the wrong wallet is
-              irreversible, and lost funds cannot be recovered. Ensure accuracy
-              to avoid financial loss.
-            </p> -->
+
           </div>
-          <div class="col-xl-7 col-lg-7 col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="buyer-seller">
-                  <div class="d-flex justify-content-between">
-                    <div class="buyer-info">
-                      <div class="d-flex align-items-center">
-                        <img
-                          style="border-radius: 10px"
-                          class="me-3"
-                          src="https://img.freepik.com/premium-vector/wallet-icon-outline-wallet-vector-icon-web-design-isolated-white-background_775815-285.jpg?w=740"
-                          alt=""
-                          width="50"
-                        />
-                        <div class="flex-grow-1">
-                          <h4>Balance</h4>
-                          <a>{{ authUser.main_balance }} $</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <tbody v-if="this.page == 'deposit'">
-                        <tr>
-                          <td>
-                            <span class="text-primary"
-                              >You are {{ this.page }}ing</span
-                            >
-                          </td>
-                          <td>
-                            <span class="text-primary"
-                              >{{ Number(this.amount) + 0 }} USDT</span
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Platform</td>
-                          <td>{{ this.method }}</td>
-                        </tr>
-
-                        <tr>
-                          <td>Network</td>
-                          <td>{{ this.address }}</td>
-                        </tr>
-                        <tr >
-                          <td>Deposit Address</td>
-                          <td   v-if="filteredAddress">
-                            {{ filteredAddress }}
-                            <i
-                              style="color: white"
-                            
-                              :class="buttonIcon"
-                              @click="copyToClipboard"
-                            >
-                              {{ buttonText }}</i
-                            >
-                          </td>
-                          <td   v-else>
-                            Please select platform and network
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td></td>
-                          <td>
-                            <div class="text-danger">
-                              If you want to deposit USDT, copy the deposit
-                              address above and proceed to your selected
-                              platform. Complete the transaction using your
-                              chosen network, then copy the Transaction ID
-                              (TXID) and submit it here.
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td>
-                            <span class="text-primary"
-                              >You are {{ this.page }}ing</span
-                            >
-                          </td>
-                          <td>
-                            <span class="text-primary"
-                              >{{ Number(this.amount) + 0 }} USDT</span
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Platform</td>
-                          <td v-if="authUser.platform">{{ authUser.platform }}</td>
-                          <td v-else>Not Set</td>
-                        </tr>
-
-                        <tr>
-                          <td>Network</td>
-                          <td v-if="authUser.platform">{{ authUser.network }}</td>
-                          <td v-else>Not Set</td>
-                        </tr>
-                        <tr >
-                          <td>Withdraw Address</td>
-               
-                            <td v-if="authUser.platform">{{ authUser.wallet }}</td>
-                            <td v-else>Not Set</td>
-                          
-                        </tr>
-
-                        <tr>
-                          <td>Note</td>
-                          <td>
-                            <div class="text-danger">
-                              If you want to withdraw USDT, please set up your withdrawal wallet in the profile section. Ensure that you have selected the correct network and address. Our system will automatically send USDT to the specified network address.
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>
@@ -431,14 +293,13 @@ export default {
     return {
       allPlatform: [],
       allNetwork: [],
-      // platform: "Select Platform",
-      // network: "Select",
-      // method: "Select",
+      
       page: "deposit",
       authUser: [],
       amount: "",
       address: "Select",
       method: "Select",
+      dep_address: "",
       buttonText: "",
       buttonIcon: "fa fa-copy",
       widTrx:'',
@@ -486,14 +347,15 @@ export default {
     },
     async depositNow() {
       this.$setLoading(true);
-
+     
       const data = {
         status: "pending",
         method: this.method,
         type: "deposit",
         amount: this.amount,
         address: this.address,
-        trxid: this.trxid,
+        dep_address: this.filteredAddress,
+        trxid: this.widTrx,
       };
 
       await axios
@@ -532,6 +394,7 @@ export default {
         amount: this.amount,
         address: this.authUser.network,
         trxid: this.widTrx,
+        dep_address: this.authUser.wallet,
       };
 
       if (this.amount > this.authUser.main_balance) {

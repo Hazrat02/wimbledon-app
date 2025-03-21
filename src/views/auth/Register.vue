@@ -236,7 +236,7 @@ export default {
                       </div>
 
                       <div class="mb-1">
-                        <label for="userCode">Code</label>
+                        <label for="userCode">Verification OTP</label>
                         <input
                           id="userCode"
                           placeholder="Enter Your Code"

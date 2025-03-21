@@ -12351,7 +12351,7 @@ h6,
 }
 
 .header .navbar-brand img {
-  max-width: 35px;
+  max-width: 25px;
 }
 
 @d-flex only screen and (max-width: 1199px) {
@@ -12364,7 +12364,7 @@ h6,
   color: #fff;
   font-weight: 700;
   margin-left: 20px;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .header.fixed {
