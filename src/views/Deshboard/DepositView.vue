@@ -63,11 +63,12 @@
                               >
                                 {{ item.name }}
                               </option>
+                               <option value="Bank">Bank</option>
                             </select>
                           </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" v-if="this.method != 'Bank'">
                           <label class="me-sm-2">Select Network - (USDT)</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -92,6 +93,7 @@
                               >
                                 {{ net.method }}
                               </option>
+                           
                             </select>
                           </div>
                         </div>
