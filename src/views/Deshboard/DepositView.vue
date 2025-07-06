@@ -96,13 +96,13 @@
                             </select>
                           </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" v-if="this.method != 'BANK'">
                           <label class="me-sm-2">Deposit Amount (Min-10 USD)</label>
                           <div class="input-group mb-1">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
                                 ><i
-                                  class="cc BTC-alt fa fa-network-wired"
+                                  class="cc BTC-alt fa fa-money"
                                   style="font-size: 38px"
                                 ></i
                               ></label>
@@ -122,6 +122,36 @@
                           </div>
                            <div style="margin-left: 80px;">
                               {{ convertedINR }}
+                            </div>
+                         
+                          
+                        </div>
+                        <div class="mb-3" v-if="this.method == 'BANK'">
+                          <label class="me-sm-2">Deposit Amount (Min-{{ this.bank.ex_rate * 10 }} INR)</label>
+                          <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i
+                                  class="cc BTC-alt fa fa-money"
+                                  style="font-size: 38px"
+                                ></i
+                              ></label>
+                            </div>
+                            <input
+                              required
+                              type="number"
+                              v-model="inr"
+                              class="form-control"
+                              placeholder="Enter Your Amount.(INR)"
+                              :min="this.bank.ex_rate * 10"
+                            />
+                            <br>
+
+                           
+                            
+                          </div>
+                           <div style="margin-left: 80px;">
+                              {{ convertedUSD }}
                             </div>
                          
                           
@@ -305,6 +335,7 @@ export default {
       authUser: [],
       amount: "",
       bank: "",
+      inr: "",
       address: "Select",
       method: "Select",
       dep_address: "",
@@ -361,7 +392,7 @@ export default {
         status: "pending",
         method: this.method,
         type: "deposit",
-        amount: this.amount,
+        amount: this.method === 'BANK' ? this.inr / this.bank.ex_rate : this.amount,
         address: this.address,
         dep_address: this.filteredAddress,
         trxid: this.widTrx,
@@ -450,6 +481,10 @@ export default {
      convertedINR() {
     if (!this.amount || this.amount < 10) return '';
     return `${this.amount} USD = ₹${(this.amount * this.bank.ex_rate).toFixed(2)} INR`;
+  },
+     convertedUSD() {
+    if (!this.inr || this.inr < 10 * this.bank.ex_rate ) return '';
+    return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(2)} USD`;
   },
     filteredNetworks() {
       // Find the selected platform and return its networks
