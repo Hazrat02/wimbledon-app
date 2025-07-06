@@ -61,7 +61,7 @@
                               {{ transactionItem.method }}
                             </td>
                             <td>
-                              Using - {{ transactionItem.address }} Network
+                              Using - {{ transactionItem.address }} 
                             </td>
                             <td
                               class=""

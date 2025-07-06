@@ -4,7 +4,7 @@
 
     <div class="content-body">
       <div class="container-fluid">
-        <div class="row ">
+        <div class="row">
           <div class="container">
             <div class="card">
               <div class="card-body">
@@ -63,12 +63,12 @@
                               >
                                 {{ item.name }}
                               </option>
-                               <option value="Bank">Bank</option>
+                              <option value="BANK">BANK</option>
                             </select>
                           </div>
                         </div>
 
-                        <div class="mb-3" v-if="this.method != 'Bank'">
+                        <div class="mb-3" v-if="this.method != 'BANK'">
                           <label class="me-sm-2">Select Network - (USDT)</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -93,32 +93,42 @@
                               >
                                 {{ net.method }}
                               </option>
-                           
                             </select>
                           </div>
                         </div>
-
                         <div class="mb-3">
-                          <label class="me-sm-2"> Deposit Amount</label>
-                          <div class="input-group">
+                          <label class="me-sm-2">Deposit Amount (Min-10 USD)</label>
+                          <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i
+                                  class="cc BTC-alt fa fa-network-wired"
+                                  style="font-size: 38px"
+                                ></i
+                              ></label>
+                            </div>
                             <input
                               required
                               type="number"
                               v-model="amount"
                               class="form-control"
-                              placeholder="Enter Your Amount."
+                              placeholder="Enter Your Amount.(USD)"
                               min="10"
                             />
-                            <input
-                              type="text"
-                              name="usd_amount"
-                              class="form-control"
-                              placeholder="Min-10 USD"
-                              disabled
-                            />
+                            <br>
+
+                           
+                            
                           </div>
+                           <div style="margin-left: 80px;">
+                              {{ convertedINR }}
+                            </div>
+                         
+                          
                         </div>
-                        
+
+                   
+
                         <button
                           type="submit"
                           name="submit"
@@ -136,7 +146,7 @@
                         class="currency_validate"
                         @submit.prevent="withdrawNow"
                       >
-                        <div  v-if="!authUser.platform" class="mb-3">
+                        <div v-if="!authUser.platform" class="mb-3">
                           <label class="me-sm-2">Payment Platform</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -165,7 +175,7 @@
                           </div>
                         </div>
 
-                        <div class="mb-3"  v-if="!authUser.platform">
+                        <div class="mb-3" v-if="!authUser.platform">
                           <label class="me-sm-2">Select Network - (USDT)</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -205,12 +215,10 @@
                               ></label>
                             </div>
 
-                            <select
-                              class="form-control"
-                           
-                            >
-                              <option selected disabled>{{ authUser.platform }}</option>
-                              
+                            <select class="form-control">
+                              <option selected disabled>
+                                {{ authUser.platform }}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -226,19 +234,16 @@
                                 ></i
                               ></label>
                             </div>
-                            <select
-                              class="form-control"
-                              id="Account"
-                             
-                            >
-                              <option selected disabled>{{ authUser.network }}</option>
-                        
+                            <select class="form-control" id="Account">
+                              <option selected disabled>
+                                {{ authUser.network }}
+                              </option>
                             </select>
                           </div>
                         </div>
 
                         <div class="mb-3">
-                          <label class="me-sm-2"> Deposit Amount</label>
+                          <label class="me-sm-2"> Withdraw Amount</label>
                           <div class="input-group">
                             <input
                               type="number"
@@ -256,15 +261,17 @@
                             />
                           </div>
                         </div>
-                        <button  v-if="authUser.platform"
+                        <button
+                          v-if="authUser.platform"
                           type="submit"
                           name="submit"
                           class="btn btn-danger btn-block"
                         >
                           Withdraw Now
                         </button>
-                        <button v-else
-                        @click="setWid"
+                        <button
+                          v-else
+                          @click="setWid"
                           class="btn btn-danger btn-block"
                         >
                           Withdraw Now
@@ -275,9 +282,7 @@
                 </div>
               </div>
             </div>
-
           </div>
-        
         </div>
       </div>
     </div>
@@ -295,31 +300,31 @@ export default {
     return {
       allPlatform: [],
       allNetwork: [],
-      
+
       page: "deposit",
       authUser: [],
       amount: "",
+      bank: "",
       address: "Select",
       method: "Select",
       dep_address: "",
       buttonText: "",
       buttonIcon: "fa fa-copy",
-      widTrx:'',
-      trxid:'',
+      widTrx: "",
+      trxid: "",
     };
   },
   methods: {
-
-    setWid(){
+    setWid() {
       this.$router.push("/account");
 
-            // transactionStore===================================
+      // transactionStore===================================
 
-            this.$notify({
-              title: "message",
-              text: "Before submitting a withdrawal request, please set up your withdrawal wallet.",
-              type: "error",
-            });
+      this.$notify({
+        title: "message",
+        text: "Before submitting a withdrawal request, please set up your withdrawal wallet.",
+        type: "error",
+      });
     },
     async copyToClipboard() {
       try {
@@ -340,16 +345,18 @@ export default {
       const prefix = "TRX";
       const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let trxId = prefix;
-      
+
       for (let i = 0; i < 10; i++) {
-        trxId += characters.charAt(Math.floor(Math.random() * characters.length));
+        trxId += characters.charAt(
+          Math.floor(Math.random() * characters.length)
+        );
       }
 
       this.widTrx = trxId;
     },
     async depositNow() {
       this.$setLoading(true);
-     
+
       const data = {
         status: "pending",
         method: this.method,
@@ -440,6 +447,10 @@ export default {
     },
   },
   computed: {
+     convertedINR() {
+    if (!this.amount || this.amount < 10) return '';
+    return `${this.amount} USD = ₹${(this.amount * this.bank.ex_rate).toFixed(2)} INR`;
+  },
     filteredNetworks() {
       // Find the selected platform and return its networks
       const platform = this.allPlatform.find((p) => p.name == this.method);
@@ -475,11 +486,12 @@ export default {
       try {
         const response = await axios.get("/api/platform");
 
-        this.allPlatform = response.data;
+        this.allPlatform = response.data.platform;
+        this.bank = response.data.bank;
       } catch (error) {
         console.log(error);
       }
-      this.generateTRXId()
+      this.generateTRXId();
       if (authUser) {
         this.authUser = authUser;
       } else {

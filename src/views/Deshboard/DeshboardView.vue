@@ -2,7 +2,6 @@
   <DeshboardLayout>
     <div class="page_title"></div>
 
-
     <div class="">
       <div class="d-none d-md-block">
         <div class="container-fluid">
@@ -19,208 +18,210 @@
         </div>
       </div>
 
-
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-xl-3 col-lg-4 col-xxl-4">
-              <div class="card balance-widget">
-                <div class="card-header border-0 py-0">
-                  <h4 class="card-title">Your Portfolio</h4>
-                </div>
-                <div class="card-body pt-0">
-                  <div class="balance-widget">
-                    <div class="total-balance">
-                      <h3>
-                        ${{
-                          Number(authUser.main_balance)
-                        }}
-                      </h3>
-                      <h6>Total Balance</h6>
-                    </div>
-                    <ul class="list-unstyled">
-                      <li class="d-flex">
-                        <i class="cc BTC me-3"></i>
-                        <div class="flex-grow-1">
-                          <h5 class="m-0">Total Withdrawals</h5>
-                        </div>
-                        <div class="text-end">
-                          <h5>{{ sumtrx }}</h5>
-                          <span>USD</span>
-                        </div>
-                      </li>
-                      <li class="d-flex">
-                        <i class="cc LTC me-3"></i>
-                        <div class="flex-grow-1">
-                          <h5 class="m-0">Total Deposit</h5>
-                        </div>
-                        <div class="text-end">
-                          <h5>{{ sumDeptrx }}</h5>
-                          <span>USD</span>
-                        </div>
-                      </li>
-                     
-                    </ul>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-xxl-4">
+            <div class="card balance-widget">
+              <div class="card-header border-0 py-0">
+                <h4 class="card-title">Your Portfolio</h4>
+              </div>
+              <div class="card-body pt-0">
+                <div class="balance-widget">
+                  <div class="total-balance">
+                    <h3>${{ Number(authUser.main_balance) }}</h3>
+                    <h6>Total Balance</h6>
                   </div>
+                  <ul class="list-unstyled">
+                    <li class="d-flex">
+                      <i class="cc BTC me-3"></i>
+                      <div class="flex-grow-1">
+                        <h5 class="m-0">Total Withdrawals</h5>
+                      </div>
+                      <div class="text-end">
+                        <h5>{{ sumtrx }}</h5>
+                        <span>USD</span>
+                      </div>
+                    </li>
+                    <li class="d-flex">
+                      <i class="cc LTC me-3"></i>
+                      <div class="flex-grow-1">
+                        <h5 class="m-0">Total Deposit</h5>
+                      </div>
+                      <div class="text-end">
+                        <h5>{{ sumDeptrx }}</h5>
+                        <span>USD</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-
-            <div class="col-xl-6 col-lg-8 col-xxl-8">
-              <div class="card profile_chart">
-                <div class="card-header py-0">
-                  
-                  <div class="duration-option">
-                    <a
-                      id="all"
-                      @click.prevent="updateChart('0')" :class="{
-                  active: this.button === '0',
-                }"
-                     
-                      >ALL</a
-                    >
-                    <a   @click.prevent="updateChart('1')" class="" :class="{
-                  active: this.button === '1',
-                }">1M</a>
-                    <a  @click.prevent="updateChart('2')" :class="{
-                  active: this.button === '2',
-                }">6M</a>
-                    <a  @click.prevent="updateChart('3')" :class="{
-                  active: this.button === '3',
-                }">1Y</a>
-                    <a  @click.prevent="updateChart('4')" :class="{
-                  active: this.button === '4',
-                }" class="d-none d-md-inline">YTD</a>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <!-- <div id="timeline-chart"></div> -->
-                  <canvas id="timeline-chart"></canvas>
-                  <!-- <canvas ref="chartCanvas" id="timeline-chart"></canvas> -->
-                  <div class="chart-content text-center mt-2">
-                    <div class="row">
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-2">Pending Withdrawals</p>
-                          <h4 class="mb-0">${{ pensumtrx }}</h4>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 col-6">
-                        <div class="chart-stat">
-                          <p class="mb-2">Pending Deposit</p>
-                          <h4 class="mb-0">${{ pensumDeptrx }}</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          
           </div>
-          <div class="row">
-    
-            <div class="container">
-              <div class="card">
-                <div class="card-header border-0 py-0">
-                  <h4 class="card-title">Recent Activities</h4>
-                  <RouterLink to="/transaction">View More </RouterLink>
-                </div>
-                <div class="card-body">
-                  <div class="transaction-table">
-                    <div class="table-responsive">
-                      <table class="table mb-0 table-responsive-sm">
-                        <td v-if="transactions.length == 0">No data!</td>
-                        <tbody>
-                          
-                          <tr
-                            v-for="(
-                              transactionItem, index
-                            ) in transactions.slice(0, 4)"
-                            :key="index"
-                          >
-                           
-                            <td>
-                              <span
-                                class="sold-thumb"
-                                :class="{
-                                  'sold-thumb':
-                                    transactionItem.type === 'withdraw',
-                                  'buy-thumb':
-                                    transactionItem.type !== 'withdraw',
-                                }"
-                                ><i
-                                  class="fa"
-                                  :class="{
-                                    'fa-arrow-up':
-                                      transactionItem.type === 'withdraw',
-                                    'fa-arrow-down':
-                                      transactionItem.type !== 'withdraw',
-                                  }"
-                                ></i
-                              ></span>
-                            </td>
-                            <td>
-                              {{ transactionItem.created_at.substring(0, 10) }}
-                            </td>
 
-                            <td>
-                              <span
-                                class="badge badge-danger"
-                                :class="{
-                                  'badge-danger':
-                                    transactionItem.type === 'withdraw',
-                                  'badge-success':
-                                    transactionItem.type !== 'withdraw',
-                                }"
-                                >{{ transactionItem.type }}</span
-                              >
-                            </td>
-                            <td>
-                              <i class="cc LTC"></i>
-                              {{ transactionItem.method }}
-                            </td>
-                            <td>
-                              Using - {{ transactionItem.address }} Network
-                            </td>
-                            <td
-                              class=""
+          <div class="col-xl-6 col-lg-8 col-xxl-8">
+            <div class="card profile_chart">
+              <div class="card-header py-0">
+                <div class="duration-option">
+                  <a
+                    id="all"
+                    @click.prevent="updateChart('0')"
+                    :class="{
+                      active: this.button === '0',
+                    }"
+                    >ALL</a
+                  >
+                  <a
+                    @click.prevent="updateChart('1')"
+                    class=""
+                    :class="{
+                      active: this.button === '1',
+                    }"
+                    >1M</a
+                  >
+                  <a
+                    @click.prevent="updateChart('2')"
+                    :class="{
+                      active: this.button === '2',
+                    }"
+                    >6M</a
+                  >
+                  <a
+                    @click.prevent="updateChart('3')"
+                    :class="{
+                      active: this.button === '3',
+                    }"
+                    >1Y</a
+                  >
+                  <a
+                    @click.prevent="updateChart('4')"
+                    :class="{
+                      active: this.button === '4',
+                    }"
+                    class="d-none d-md-inline"
+                    >YTD</a
+                  >
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- <div id="timeline-chart"></div> -->
+                <canvas id="timeline-chart"></canvas>
+                <!-- <canvas ref="chartCanvas" id="timeline-chart"></canvas> -->
+                <div class="chart-content text-center mt-2">
+                  <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-6">
+                      <div class="chart-stat">
+                        <p class="mb-2">Pending Withdrawals</p>
+                        <h4 class="mb-0">${{ pensumtrx }}</h4>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-6">
+                      <div class="chart-stat">
+                        <p class="mb-2">Pending Deposit</p>
+                        <h4 class="mb-0">${{ pensumDeptrx }}</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="container">
+            <div class="card">
+              <div class="card-header border-0 py-0">
+                <h4 class="card-title">Recent Activities</h4>
+                <RouterLink to="/transaction">View More </RouterLink>
+              </div>
+              <div class="card-body">
+                <div class="transaction-table">
+                  <div class="table-responsive">
+                    <table class="table mb-0 table-responsive-sm">
+                      <td v-if="transactions.length == 0">No data!</td>
+                      <tbody>
+                        <tr
+                          v-for="(transactionItem, index) in transactions.slice(
+                            0,
+                            4
+                          )"
+                          :key="index"
+                        >
+                          <td>
+                            <span
+                              class="sold-thumb"
                               :class="{
-                                'text-danger':
+                                'sold-thumb':
                                   transactionItem.type === 'withdraw',
-                                'text-success':
+                                'buy-thumb':
                                   transactionItem.type !== 'withdraw',
                               }"
-                            >
-                              {{ transactionItem.amount }} USD
-                            </td>
-                            <td>
-                              <span
-                                class="badge"
+                              ><i class="fa"
                                 :class="{
-                                  'bg-warning':
-                                    transactionItem.status === 'pending',
-                                  'bg-danger':
-                                    transactionItem.status === 'rejected',
-                                  'bg-success':
-                                    transactionItem.status === 'success',
+                                  'fa-arrow-up':
+                                    transactionItem.type === 'withdraw',
+                                  'fa-arrow-down':
+                                    transactionItem.type !== 'withdraw',
                                 }"
-                                >{{ transactionItem.status }}</span
-                              >
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                              ></i
+                            ></span>
+                          </td>
+                          <td>
+                            {{ transactionItem.created_at.substring(0, 10) }}
+                          </td>
+
+                          <td>
+                            <span
+                              class="badge badge-danger"
+                              :class="{
+                                'badge-danger':
+                                  transactionItem.type === 'withdraw',
+                                'badge-success':
+                                  transactionItem.type !== 'withdraw',
+                              }"
+                              >{{ transactionItem.type }}</span
+                            >
+                          </td>
+                          <td>
+                            <i class="cc LTC"></i>
+                            {{ transactionItem.method }}
+                          </td>
+                          <td>Using - {{ transactionItem.address }}</td>
+                          <td
+                            class=""
+                            :class="{
+                              'text-danger':
+                                transactionItem.type === 'withdraw',
+                              'text-success':
+                                transactionItem.type !== 'withdraw',
+                            }"
+                          >
+                            {{ transactionItem.amount }} USD
+                          </td>
+                          <td>
+                            <span
+                              class="badge"
+                              :class="{
+                                'bg-warning':
+                                  transactionItem.status === 'pending',
+                                'bg-danger':
+                                  transactionItem.status === 'rejected',
+                                'bg-success':
+                                  transactionItem.status === 'success',
+                              }"
+                              >{{ transactionItem.status }}</span
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+        </div>
       </div>
     </div>
-
-   
   </DeshboardLayout>
 </template>
   
@@ -236,7 +237,7 @@ import { RouterLink } from "vue-router";
 export default {
   data() {
     return {
-      button:'0',
+      button: "0",
       authUser: [],
       page: "deposit",
 
@@ -246,21 +247,21 @@ export default {
       transactions: [],
       chart: null,
       datasets: [
-            {
-              label: "REIT",
-              data: [],
-              borderColor: "#7B6FFF",
-              backgroundColor: "rgba(123, 111, 255, 0.5)",
-              fill: true,
-            },
-            {
-              label: "ETFs",
-              data: [],
-              borderColor: "#1652F0",
-              backgroundColor: "rgba(22, 82, 240, 0.5)",
-              fill: true,
-            },
-          ],
+        {
+          label: "REIT",
+          data: [],
+          borderColor: "#7B6FFF",
+          backgroundColor: "rgba(123, 111, 255, 0.5)",
+          fill: true,
+        },
+        {
+          label: "ETFs",
+          data: [],
+          borderColor: "#1652F0",
+          backgroundColor: "rgba(22, 82, 240, 0.5)",
+          fill: true,
+        },
+      ],
     };
   },
   methods: {
@@ -369,22 +370,17 @@ export default {
       return Array.from({ length: count }, () => Math.random() * 10);
     },
     updateChart(number) {
-
       if (this.chartInstance) {
-      // Update datasets with new data
-      this.chartInstance.data.datasets[0].data = this.generateData(30);
-      this.chartInstance.data.datasets[1].data = this.generateData(30);
-      this.button = number;
-      // Refresh the chart
-      this.chartInstance.update();
-    
-
-    }
-   
-  },
+        // Update datasets with new data
+        this.chartInstance.data.datasets[0].data = this.generateData(30);
+        this.chartInstance.data.datasets[1].data = this.generateData(30);
+        this.button = number;
+        // Refresh the chart
+        this.chartInstance.update();
+      }
+    },
   },
   computed: {
-   
     sumtrx() {
       // Filter withdraw transactions with status success and calculate the sum
       const withdrawSuccessTransactions = Object.values(
@@ -453,44 +449,41 @@ export default {
 
       return sum;
     },
-
   },
   mounted() {
     // Initialize the chart data before creating the chart
-  this.datasets[0].data = this.generateData(30);
-  this.datasets[1].data = this.generateData(30);
+    this.datasets[0].data = this.generateData(30);
+    this.datasets[1].data = this.generateData(30);
 
-  // Wait for DOM updates, then initialize the chart
-  this.$nextTick(() => {
-    var ctx2 = document.getElementById("timeline-chart");
-    if (ctx2) {
-      this.chartInstance = new Chart(ctx2, {
-        type: "line",
-        data: {
-          labels: [
-            "20 Nov",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
-          datasets: this.datasets,
-        },
-        options: {
-          responsive: true,
-        },
-      });
-    }
-  });
-
-
+    // Wait for DOM updates, then initialize the chart
+    this.$nextTick(() => {
+      var ctx2 = document.getElementById("timeline-chart");
+      if (ctx2) {
+        this.chartInstance = new Chart(ctx2, {
+          type: "line",
+          data: {
+            labels: [
+              "20 Nov",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ],
+            datasets: this.datasets,
+          },
+          options: {
+            responsive: true,
+          },
+        });
+      }
+    });
   },
   async created() {
     const userStore = useAuthUserStore();
