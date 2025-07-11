@@ -53,9 +53,7 @@
                   <li>
                     <h5 class="text-danger me-4">Join at</h5>
                     <span class="text-danger">
-                    {{
-                      authUser.created_at.substring(0, 10)
-                    }}
+                      {{ authUser.created_at.substring(0, 10) }}
                     </span>
                   </li>
                 </ul>
@@ -65,16 +63,64 @@
           <div class="col-xl-6 col-lg-6 col-md-6">
             <div class="card acc_balance">
               <div class="card-header">
-                <h4 class="card-title">Withdrawal Wallet</h4>
+                <h4 class="card-title">Withdrawal Details</h4>
               </div>
               <div class="card-body">
-                <span>Total Balance</span>
-                <h3>
-                  {{ Number(authUser.main_balance) }}
-                  USD
-                </h3>
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <span>Total Balance</span>
+                    <h3>
+                      {{ Number(authUser.main_balance) }}
+                      USD
+                    </h3>
+                  </div>
+                  <div v-if="authUser.platform === 'BANK'">
+                    <span>Bank Name</span>
+                    <h3>
+                      {{ authUser.bank.branch }}
+                    </h3>
+                  </div>
+                </div>
 
-                <div class="d-flex justify-content-between my-4">
+                <div
+                  class="d-flex justify-content-between my-1"
+                  v-if="authUser.platform === 'BANK'"
+                >
+                  <div>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.bank.beneficiary }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
+                    <h4>Beneficiary</h4>
+                  </div>
+                  <div>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.bank.ac_num }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
+                    <h4>Account number</h4>
+                  </div>
+                </div>
+                <div
+                  class="d-flex justify-content-between my-1"
+                  v-if="authUser.platform === 'BANK'"
+                >
+                  <div>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.bank.ac_type }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
+                    <h4>Account type</h4>
+                  </div>
+                  <div>
+                    <p v-if="authUser.platform" class="mb-1">
+                      {{ authUser.bank.ifsc_code }}
+                    </p>
+                    <p v-else class="mb-1">Not Set</p>
+                    <h4>IFSC Code</h4>
+                  </div>
+                </div>
+                <div v-else class="d-flex justify-content-between my-1">
                   <div>
                     <p v-if="authUser.platform" class="mb-1">
                       {{ authUser.wallet }}
@@ -91,7 +137,7 @@
                   </div>
                 </div>
 
-                <div class="btn-group mb-3">
+                <div class="btn-group">
                   <router-link to="/deposit" class="btn btn-primary"
                     >Deposit</router-link
                   >
@@ -856,39 +902,88 @@
                             >
                               {{ item.name }}
                             </option>
+                            <option value="BANK">BANK</option>
                           </select>
                         </div>
-                        <div class="mb-3 col-xl-6">
-                          <label class="me-sm-2" for="network">Network For USDT</label>
-                          <select
-                            class="form-control"
-                            id="network"
-                            v-model="network"
-                            required
-                          >
-                            <option selected disabled>Select</option>
-                            <option
-                              v-for="(net, index) in filteredNetworks"
-                              :key="index"
-                              :value="net.method"
+                        <div v-if="this.method != 'BANK'">
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2" for="network"
+                              >Network For USDT</label
                             >
-                              {{ net.method }}
-                            </option>
-                          </select>
+                            <select
+                              class="form-control"
+                              id="network"
+                              v-model="network"
+                              required
+                            >
+                              <option selected disabled>Select</option>
+                              <option
+                                v-for="(net, index) in filteredNetworks"
+                                :key="index"
+                                :value="net.method"
+                              >
+                                {{ net.method }}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">Address</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Your Selected Network Address"
+                              v-model="address"
+                            />
+                          </div>
                         </div>
-
-                        <div class="mb-3 col-xl-6">
-                          <label class="me-sm-2">Address</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Your Selected Network Address"
-                            v-model="address"
-                          />
+                        <div v-if="this.method === 'BANK'">
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">Beneficiary</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Enter Beneficiary"
+                              v-model="bank.beneficiary"
+                            />
+                          </div>
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">Account number</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Enter Your Account number"
+                              v-model="bank.ac_num"
+                            />
+                          </div>
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">Account type</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Enter Your Account Type"
+                              v-model="bank.ac_type"
+                            />
+                          </div>
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">Bank</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Enter Your Bank Name"
+                              v-model="bank.branch"
+                            />
+                          </div>
+                          <div class="mb-3 col-xl-6">
+                            <label class="me-sm-2">IFSC/IBAN</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Enter your IFSC/IBAN Number"
+                              v-model="bank.ifsc_code"
+                            />
+                          </div>
                         </div>
-
-
-                       
 
                         <div class="mb-3 col-12">
                           <button class="btn btn-success ps-5 pe-5">
@@ -909,8 +1004,6 @@
 </template>
     
 <script>
-
-
 import { useAuthUserStore } from "../../store/user";
 import { useNomineeStore } from "../../store/nominee";
 import isAuthenticated from "./../../midleware/auth";
@@ -924,9 +1017,17 @@ export default {
       platform: "Select Platform",
       network: "Select",
       method: "Select",
+      address: "",
       showPassword: false,
       authUser: [],
       nominee: [],
+      bank: {
+        beneficiary: "",
+        ac_num: "",
+        ac_type: "",
+        branch: "",
+        ifsc_code: "",
+      },
       checkbox: "",
       password: "",
       password_confirmation: "",
@@ -948,8 +1049,6 @@ export default {
     };
   },
   methods: {
-
-
     image(event) {
       this.profile = event.target.files[0];
     },
@@ -1001,37 +1100,42 @@ export default {
     async setWallet() {
       this.$setLoading(true);
 
-      const formData = new FormData(); // Create a FormData object
-      formData.append("address", this.address);
-      formData.append("platform", this.method);
-      formData.append("network", this.network);
-      
+      const formData = new FormData();
 
-      await axios
-        .post("/api/address/edit", formData, {
+      if (this.method === "BANK") {
+        formData.append("bank", JSON.stringify(this.bank)); // ✅ fix here
+        formData.append("platform", this.method);
+      } else {
+        formData.append("address", this.address);
+        formData.append("network", this.network);
+        formData.append("platform", this.method);
+      }
+
+      try {
+        const response = await axios.post("/api/address/edit", formData, {
           headers: {
-            "Content-Type": "multipart/form-data", // Set content type for file upload
+            "Content-Type": "multipart/form-data",
           },
-        })
-        .then((response) => {
-          (this.authUser = response.data.user),
-            this.$notify({
-              title: "message",
-              text: response.data.message,
-              type: "success",
-            });
-        })
-        .catch((error) => {
-          this.$setLoading(false);
-          this.$notify({
-            title: "Error message",
-            text: error.response.data.message,
-            type: "error",
-          });
         });
 
-      this.$setLoading(false);
+        this.authUser = response.data.user;
+
+        this.$notify({
+          title: "message",
+          text: response.data.message,
+          type: "success",
+        });
+      } catch (error) {
+        this.$notify({
+          title: "Error message",
+          text: error?.response?.data?.message || "Something went wrong",
+          type: "error",
+        });
+      } finally {
+        this.$setLoading(false);
+      }
     },
+
     async nomineeSave() {
       this.$setLoading(true);
 
@@ -1075,9 +1179,8 @@ export default {
       this.$setLoading(false);
     },
   },
-  computed: {  
-
-        filteredNetworks() {
+  computed: {
+    filteredNetworks() {
       // Find the selected platform and return its networks
       const platform = this.allPlatform.find((p) => p.name == this.method);
 
@@ -1109,7 +1212,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-     
+
       if (authUser) {
         this.authUser = authUser;
       } else {

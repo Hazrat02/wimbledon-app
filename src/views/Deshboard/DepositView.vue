@@ -97,7 +97,9 @@
                           </div>
                         </div>
                         <div class="mb-3" v-if="this.method != 'BANK'">
-                          <label class="me-sm-2">Deposit Amount (Min-10 USD)</label>
+                          <label class="me-sm-2"
+                            >Deposit Amount (Min-10 USD)</label
+                          >
                           <div class="input-group mb-1">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
@@ -115,19 +117,19 @@
                               placeholder="Enter Your Amount.(USD)"
                               min="10"
                             />
-                            <br>
-
-                           
-                            
+                            <br />
                           </div>
-                           <div style="margin-left: 80px;">
-                              {{ convertedINR }}
-                            </div>
-                         
-                          
+                          <div style="margin-left: 80px">
+                            {{ convertedINR }}
+                          </div>
                         </div>
                         <div class="mb-3" v-if="this.method == 'BANK'">
-                          <label class="me-sm-2">Deposit Amount (Min-{{ this.bank.ex_rate * 10 }} INR)</label>
+                          <label class="me-sm-2"
+                            >Deposit Amount (Min-{{
+                              this.bank.ex_rate * 10
+                            }}
+                            INR)</label
+                          >
                           <div class="input-group mb-1">
                             <div class="input-group-prepend">
                               <label class="input-group-text"
@@ -145,19 +147,12 @@
                               placeholder="Enter Your Amount.(INR)"
                               :min="this.bank.ex_rate * 10"
                             />
-                            <br>
-
-                           
-                            
+                            <br />
                           </div>
-                           <div style="margin-left: 80px;">
-                              {{ convertedUSD }}
-                            </div>
-                         
-                          
+                          <div style="margin-left: 80px">
+                            {{ convertedUSD }}
+                          </div>
                         </div>
-
-                   
 
                         <button
                           type="submit"
@@ -233,6 +228,7 @@
                             </select>
                           </div>
                         </div>
+
                         <div v-if="authUser.platform" class="mb-3">
                           <label class="me-sm-2">Payment Platform</label>
                           <div class="input-group mb-3">
@@ -253,7 +249,12 @@
                           </div>
                         </div>
 
-                        <div v-if="authUser.platform" class="mb-3">
+                        <div
+                          v-if="
+                            authUser.platform && authUser.platform != 'BANK'
+                          "
+                          class="mb-3"
+                        >
                           <label class="me-sm-2">Select Network - (USDT)</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -272,7 +273,65 @@
                           </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" v-if="this.authUser.platform != 'BANK'">
+                          <label class="me-sm-2"
+                            >Withdraw Amount (Min-10 USD)</label
+                          >
+                          <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i
+                                  class="cc BTC-alt fa fa-money"
+                                  style="font-size: 38px"
+                                ></i
+                              ></label>
+                            </div>
+                            <input
+                              required
+                              type="number"
+                              v-model="amount"
+                              class="form-control"
+                              placeholder="Enter Your Amount.(USD)"
+                              min="10"
+                            />
+                            <br />
+                          </div>
+                          <div style="margin-left: 80px">
+                            {{ widCon }}
+                          </div>
+                        </div>
+                        <div class="mb-3" v-if="this.authUser.platform == 'BANK'">
+                          <label class="me-sm-2"
+                            >Withdraw Amount (Min-{{
+                              this.bank.ex_rate * 10
+                            }}
+                            INR)</label
+                          >
+                          <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text"
+                                ><i
+                                  class="cc BTC-alt fa fa-money"
+                                  style="font-size: 38px"
+                                ></i
+                              ></label>
+                            </div>
+                            <input
+                              required
+                              type="number"
+                              v-model="inr"
+                              class="form-control"
+                              placeholder="Enter Your Amount.(INR)"
+                              :min="this.bank.ex_rate * 10"
+                            />
+                            <br />
+                          </div>
+                          <div style="margin-left: 80px">
+                            {{ widCon }}
+                          </div>
+                        </div>
+
+                        <!-- <div class="mb-3">
                           <label class="me-sm-2"> Withdraw Amount</label>
                           <div class="input-group">
                             <input
@@ -290,7 +349,10 @@
                               disabled
                             />
                           </div>
-                        </div>
+                          <div style="margin-left: 80px">
+                            {{ widCon }}
+                          </div>
+                        </div> -->
                         <button
                           v-if="authUser.platform"
                           type="submit"
@@ -392,7 +454,7 @@ export default {
         status: "pending",
         method: this.method,
         type: "deposit",
-        amount: this.method === 'BANK' ? this.inr / this.bank.ex_rate : this.amount,
+        amount:  this.method === "BANK" ? this.inr / this.bank.ex_rate : this.amount,
         address: this.address,
         dep_address: this.filteredAddress,
         trxid: this.widTrx,
@@ -404,7 +466,7 @@ export default {
           this.$setLoading(false);
           // transactionStore===================================
           this.$router.push("/transaction");
-
+          console.log(response.data);
           this.$notify({
             title: "message",
             text: response.data.message,
@@ -431,7 +493,7 @@ export default {
         status: "pending",
         method: this.authUser.platform,
         type: "withdraw",
-        amount: this.amount,
+        amount: this.authUser.platform === "BANK" ? this.inr / this.bank.ex_rate : this.amount,
         address: this.authUser.network,
         trxid: this.widTrx,
         dep_address: this.authUser.wallet,
@@ -468,6 +530,8 @@ export default {
           .catch((error) => {
             // Handle the error
             this.$setLoading(false);
+            console.log(error);
+
             this.$notify({
               title: "Error message",
               text: error.response.data.message,
@@ -478,14 +542,27 @@ export default {
     },
   },
   computed: {
-     convertedINR() {
-    if (!this.amount || this.amount < 10) return '';
-    return `${this.amount} USD = ₹${(this.amount * this.bank.ex_rate).toFixed(2)} INR`;
-  },
-     convertedUSD() {
-    if (!this.inr || this.inr < 10 * this.bank.ex_rate ) return '';
-    return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(2)} USD`;
-  },
+    widCon() {
+      if (this.authUser.platform === "BANK") {
+        return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(
+          2
+        )} USD`;
+      } else {
+        return `${this.amount} USD = ₹${(
+          this.amount * this.bank.ex_rate
+        ).toFixed(2)} INR`;
+      }
+    },
+    convertedINR() {
+      return `${this.amount} USD = ₹${(this.amount * this.bank.ex_rate).toFixed(
+        2
+      )} INR`;
+    },
+    convertedUSD() {
+      return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(
+        2
+      )} USD`;
+    },
     filteredNetworks() {
       // Find the selected platform and return its networks
       const platform = this.allPlatform.find((p) => p.name == this.method);
