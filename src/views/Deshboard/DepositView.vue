@@ -63,12 +63,18 @@
                               >
                                 {{ item.name }}
                               </option>
-                              <option value="BANK">BANK</option>
+                              <option
+                                v-for="(item, index) in bank"
+                                :key="index"
+                                :value="item.method_name"
+                              >
+                                {{ item.method_name }}
+                              </option>
                             </select>
                           </div>
                         </div>
 
-                        <div class="mb-3" v-if="this.method != 'BANK'">
+                        <div class="mb-3" v-if="allPlatform.some(p => p.name === method)">
                           <label class="me-sm-2">Select Network - (USDT)</label>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -96,7 +102,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="mb-3" v-if="this.method != 'BANK'">
+                        <div class="mb-3" v-if="!this.bank.some(p => p.method_name === method)">
                           <label class="me-sm-2"
                             >Deposit Amount (Min-10 USD)</label
                           >
@@ -123,10 +129,10 @@
                             {{ convertedINR }}
                           </div>
                         </div>
-                        <div class="mb-3" v-if="this.method == 'BANK'">
+                        <div class="mb-3" v-if="this.bank.some(p => p.method_name === method)">
                           <label class="me-sm-2"
                             >Deposit Amount (Min-{{
-                              this.bank.ex_rate * 10
+                              this.bank[0].ex_rate * 10
                             }}
                             INR)</label
                           >
@@ -251,7 +257,7 @@
 
                         <div
                           v-if="
-                            authUser.platform && authUser.platform != 'BANK'
+                            authUser.platform &&   !this.bank.some(p => p.method_name === authUser.platform)
                           "
                           class="mb-3"
                         >
@@ -273,7 +279,7 @@
                           </div>
                         </div>
 
-                        <div class="mb-3" v-if="this.authUser.platform != 'BANK'">
+                        <div class="mb-3" v-if="!this.bank.some(p => p.method_name === authUser.platform)">
                           <label class="me-sm-2"
                             >Withdraw Amount (Min-10 USD)</label
                           >
@@ -300,10 +306,10 @@
                             {{ widCon }}
                           </div>
                         </div>
-                        <div class="mb-3" v-if="this.authUser.platform == 'BANK'">
+                        <div class="mb-3" v-if="this.bank.some(p => p.method_name === authUser.platform)">
                           <label class="me-sm-2"
                             >Withdraw Amount (Min-{{
-                              this.bank.ex_rate * 10
+                                   this.bank[0].ex_rate * 10
                             }}
                             INR)</label
                           >
@@ -396,7 +402,7 @@ export default {
       page: "deposit",
       authUser: [],
       amount: "",
-      bank: "",
+      bank: [],
       inr: "",
       address: "Select",
       method: "Select",
@@ -454,7 +460,7 @@ export default {
         status: "pending",
         method: this.method,
         type: "deposit",
-        amount:  this.method === "BANK" ? this.inr / this.bank.ex_rate : this.amount,
+        amount:  this.bank.some(p => p.method_name === this.method) ? this.inr / this.bank.find(b => b.method_name === this.method).ex_rate : this.amount,
         address: this.address,
         dep_address: this.filteredAddress,
         trxid: this.widTrx,
@@ -493,7 +499,8 @@ export default {
         status: "pending",
         method: this.authUser.platform,
         type: "withdraw",
-        amount: this.authUser.platform === "BANK" ? this.inr / this.bank.ex_rate : this.amount,
+        
+        amount: this.bank.some(p => p.method_name === this.authUser.platform) ? this.inr / this.bank.find(b => b.method_name === this.authUser.platform).ex_rate : this.amount,
         address: this.authUser.network,
         trxid: this.widTrx,
         dep_address: this.authUser.wallet,
@@ -543,26 +550,41 @@ export default {
   },
   computed: {
     widCon() {
-      if (this.authUser.platform === "BANK") {
-        return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(
+      if (this.bank.some(p => p.method_name === this.authUser.platform)) {
+        return `₹${this.inr} INR = ${(this.inr / this.bank['0'].ex_rate).toFixed(
           2
         )} USD`;
       } else {
         return `${this.amount} USD = ₹${(
-          this.amount * this.bank.ex_rate
+          this.amount *  this.bank[0]?.ex_rate || 0
         ).toFixed(2)} INR`;
       }
     },
     convertedINR() {
-      return `${this.amount} USD = ₹${(this.amount * this.bank.ex_rate).toFixed(
-        2
-      )} INR`;
+      // Find the matching bank object based on the selected method
+      const rate = this.bank[0]?.ex_rate || 1;
+  // Return the formatted string
+  return `${this.amount} USD = ₹${(this.amount * rate).toFixed(2)} INR`;
+
+
     },
     convertedUSD() {
-      return `₹${this.inr} INR = ${(this.inr / this.bank.ex_rate).toFixed(
+
+
+    const match = this.bank.find(b => b.method_name === this.method);
+  
+  const rate = match ? match.ex_rate : 1;
+
+
+      return `₹${this.inr} INR = ${(this.inr / rate).toFixed(
         2
       )} USD`;
-    },
+      
+
+
+
+      
+        },
     filteredNetworks() {
       // Find the selected platform and return its networks
       const platform = this.allPlatform.find((p) => p.name == this.method);

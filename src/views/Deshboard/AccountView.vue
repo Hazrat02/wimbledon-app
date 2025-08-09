@@ -74,7 +74,13 @@
                       USD
                     </h3>
                   </div>
-                  <div v-if="authUser.platform === 'BANK'">
+                  <div
+                    v-if="
+                      this.allBank.some(
+                        (p) => p.method_name === authUser.platform
+                      )
+                    "
+                  >
                     <span>Bank Name</span>
                     <h3>
                       {{ authUser.bank.branch }}
@@ -84,7 +90,11 @@
 
                 <div
                   class="d-flex justify-content-between my-1"
-                  v-if="authUser.platform === 'BANK'"
+                  v-if="
+                    this.allBank.some(
+                      (p) => p.method_name === authUser.platform
+                    )
+                  "
                 >
                   <div>
                     <p v-if="authUser.platform" class="mb-1">
@@ -103,7 +113,11 @@
                 </div>
                 <div
                   class="d-flex justify-content-between my-1"
-                  v-if="authUser.platform === 'BANK'"
+                  v-if="
+                    this.allBank.some(
+                      (p) => p.method_name === authUser.platform
+                    )
+                  "
                 >
                   <div>
                     <p v-if="authUser.platform" class="mb-1">
@@ -902,10 +916,22 @@
                             >
                               {{ item.name }}
                             </option>
-                            <option value="BANK">BANK</option>
+                            <option
+                              v-for="(item, index) in allBank"
+                              :key="index"
+                              :value="item.method_name"
+                            >
+                              {{ item.method_name }}
+                            </option>
                           </select>
                         </div>
-                        <div v-if="this.method != 'BANK'">
+                        <div
+                          v-if="
+                            !this.allBank.some(
+                              (p) => p.method_name === this.method
+                            )
+                          "
+                        >
                           <div class="mb-3 col-xl-6">
                             <label class="me-sm-2" for="network"
                               >Network For USDT</label
@@ -937,7 +963,13 @@
                             />
                           </div>
                         </div>
-                        <div v-if="this.method === 'BANK'">
+                        <div
+                          v-if="
+                            this.allBank.some(
+                              (p) => p.method_name === this.method
+                            )
+                          "
+                        >
                           <div class="mb-3 col-xl-6">
                             <label class="me-sm-2">Beneficiary</label>
                             <input
@@ -1014,6 +1046,7 @@ export default {
     return {
       allPlatform: [],
       allNetwork: [],
+      allBank: [],
       platform: "Select Platform",
       network: "Select",
       method: "Select",
@@ -1102,7 +1135,7 @@ export default {
 
       const formData = new FormData();
 
-      if (this.method === "BANK") {
+      if (this.allBank.some((p) => p.method_name === this.method)) {
         formData.append("bank", JSON.stringify(this.bank)); // ✅ fix here
         formData.append("platform", this.method);
       } else {
@@ -1209,6 +1242,8 @@ export default {
         const response = await axios.get("/api/platform");
 
         this.allPlatform = response.data.platform;
+
+        this.allBank = response.data.bank;
       } catch (error) {
         console.log(error);
       }
