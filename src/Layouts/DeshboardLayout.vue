@@ -61,8 +61,7 @@
                         <li class="usd">
                           <span
                             >{{
-                              Number(authUser.main_balance) +
-                              Number(authUser.live_balance)
+                              Number(authUser.main_balance)
                             }}
                             USD</span
                           >
@@ -152,6 +151,17 @@
                 <span><i class="fa fa-user me-1"></i></span> PROFILE
               </router-link>
             </li>
+
+               <li>
+              <router-link
+                to="/commission"
+                :class="{
+                  active: this.$route.path === '/commission',
+                }"
+              >
+                <span><i class="fa fa-money me-2"></i></span>EARN
+              </router-link>
+            </li>
             <li>
               <router-link
                 to="/kyc"
@@ -159,9 +169,10 @@
                   active: this.$route.path === '/kyc',
                 }"
               >
-                <span><i class="fa fa-id-card me-3"></i></span> KYC
+                <span><i class="fa fa-id-card me-2"></i></span> KYC
               </router-link>
             </li>
+         
           </ul>
         </div>
       </div>

@@ -515,6 +515,7 @@ progress {
 .list-unstyled {
   padding-left: 0;
   list-style: none;
+
 }
 
 .list-inline {
@@ -8073,6 +8074,7 @@ fieldset:disabled .btn {
 
 .text-end {
   text-align: right !important;
+  align-items: center;
 }
 
 .text-center {
@@ -14085,6 +14087,85 @@ input:-internal-autofill-selected {
   cursor: pointer;
   width: 100%;
 }
+.file-upload-wrapper2 {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  color: #aeaed5;
+}
+
+.file-upload-wrapper2:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 10px 15px;
+  display: block;
+  width: calc(100% - 40px);
+  pointer-events: none;
+  z-index: 20;
+  height: 48px;
+  line-height: 30px;
+  border-radius: 5px 10px 10px 5px;
+  font-weight: 500;
+  overflow: hidden;
+}
+.copy {
+
+  margin-left: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.copy_btn {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #111;
+  font-size: 12px;
+  font-weight: 600;
+  width: auto;
+  padding: 4px 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+}
+
+
+.copy_btn:hover {
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  transform: translateY(-1px);
+
+
+  
+}
+
+.file-upload-wrapper2:hover:before {
+  background: #4c3cff;
+}
+
+.file-upload-wrapper2 input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  /* cursor: pointer; */
+  width: 100%;
+}
+   
+
+
 
 #ui-datepicker-div {
   display: none;

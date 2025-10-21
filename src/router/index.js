@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DeshboardView from '../views/Deshboard/DeshboardView.vue'
 import KycView from '../views/Deshboard/KycView.vue'
 import DepositView from '../views/Deshboard/DepositView.vue'
+import commissionView from '../views/Deshboard/commissionView.vue'
 
 import TransactionView from '../views/Deshboard/TransactionView.vue'
 import AccountView from '../views/Deshboard/AccountView.vue'
@@ -82,6 +83,15 @@ const router = createRouter({
       name: 'kyc',
 
       component:KycView,
+      meta:{
+        requiresAuth:true,
+      },
+    },
+    {
+      path: '/commission',
+      name: 'commission',
+
+      component:commissionView,
       meta:{
         requiresAuth:true,
       },
