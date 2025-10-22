@@ -153,7 +153,7 @@
             </li>
 
                <li>
-              <router-link
+              <router-link v-if="this.authUser.role == 3"
                 to="/commission"
                 :class="{
                   active: this.$route.path === '/commission',

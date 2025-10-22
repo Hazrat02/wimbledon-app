@@ -27,26 +27,7 @@
                       <span>USD</span>
                     </div>
                   </li>
-                  <li class="d-flex">
-                    <i class="cc LTC me-3"></i>
-                    <div class="flex-grow-1">
-                      <h5 class="m-0">Total Deposit</h5>
-                    </div>
-                    <div class="text-end">
-                      <h5>{{ sumDeptrx }}</h5>
-                      <span>USD</span>
-                    </div>
-                  </li>
-                  <li class="d-flex">
-                    <i class="cc LTC me-3"></i>
-                    <div class="flex-grow-1">
-                      <h5 class="m-0">Total Deposit</h5>
-                    </div>
-                    <div class="text-end">
-                      <h5>{{ sumDeptrx }}</h5>
-                      <span>USD</span>
-                    </div>
-                  </li>
+                 
                 </ul>
               </div>
             </div>
@@ -101,6 +82,7 @@
               <div class="">
                 <div class="card-header">
                   <h4 class="card-title">Invite Link</h4>
+                  <button class="btn btn-primary" >more info.</button>
                 </div>
                 <div class="card-body balance-widget">
                   <ul class="list-unstyled">
@@ -110,7 +92,7 @@
                         <h5 class="m-0">Invite Code</h5>
                       </div>
                       <div class="text-end">
-                        <h5>4343434  <i class="fa fa-copy" style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
+                        <h5>{{ code }}  <i @click="copyLink('code')" class="fa fa-copy" style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
                       </div>
                     </li>
                  
@@ -120,8 +102,8 @@
                         <h5 class="m-0">Invite Link</h5>
                       </div>
                       <div class="text-end">
-                        <h5>https://dashboard.wimbledoninvestments.com/register?ref=4343434
-  <i class="fa fa-copy" style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
+                        <h5> {{ invite_link }}
+  <i class="fa fa-copy"  @click="copyLink('invite_link')"  style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
                       </div>
                     </li>
                  
@@ -245,7 +227,7 @@ export default {
       authUser: [],
       page: "deposit",
       code: "21323v23",
-
+      invite_link:'https://dashboard.wimbledoninvestments.com/register?ref=4343434',
       amount: "",
       address: "Select",
       method: "Select",
@@ -270,122 +252,28 @@ export default {
     };
   },
   methods: {
-    generateTRXId() {
-      return "TRX-" + Math.floor(Math.random() * 1000000);
-    },
-    async depositNow() {
-      this.$setLoading(true);
-
-      const data = {
-        status: "pending",
-        method: this.method,
-        type: "deposit",
-        amount: this.amount,
-        address: this.address,
-        trx: this.generateTRXId(),
-      };
-
-      await axios
-        .post("api/deposit", data)
-        .then((response) => {
-          this.$setLoading(false);
-          // transactionStore===================================
-          this.$router.push("/transaction");
-
+      copyLink(payload) {
+        if (payload == 'invite_link') {
+               navigator.clipboard.writeText(this.invite_link);
+        } else {
+           navigator.clipboard.writeText(this.code);
+        }
+    
+        
           this.$notify({
-            title: "message",
-            text: response.data.message,
-            type: "success",
+            title: "",
+            text: "Copied to clipboard!",
+            type: "sucsess",
           });
-          const getTransaction = transactionStore();
-
-          getTransaction.addTransaction(response.data);
-        })
-        .catch((error) => {
-          // Handle the error
-          this.$setLoading(false);
-          this.$notify({
-            title: "Error message",
-            text: error.response.data.message,
-            type: "error",
-          });
-        });
-    },
-    initChart() {
-      const ctx = this.$refs.chartCanvas.getContext("2d");
-      this.chart = new Chart(ctx, {
-        type: "line",
-        data: this.chartData,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: "top" } },
-          scales: {
-            x: {
-              type: "time",
-              time: { unit: "day" },
-              adapters: { date: adapter },
-            },
-            y: { beginAtZero: true },
-          },
-        },
-      });
-    },
-    updateChart(range) {
-      let labels, data;
-      switch (range) {
-        case "one_month":
-          labels = this.generateLabels(30);
-          data = this.generateData(30);
-          break;
-        case "six_months":
-          labels = this.generateLabels(180);
-          data = this.generateData(180);
-          break;
-        case "one_year":
-          labels = this.generateLabels(365);
-          data = this.generateData(365);
-          break;
-        case "ytd":
-          labels = this.generateLabels(60);
-          data = this.generateData(60);
-          break;
-        default:
-          labels = this.generateLabels(730);
-          data = this.generateData(730);
-      }
-      this.chart.data.labels = labels;
-      this.chart.data.datasets.forEach((dataset) => (dataset.data = data));
-      this.chart.update();
-    },
-    generateLabels(count) {
-      let labels = [];
-      let date = new Date();
-      for (let i = count; i > 0; i--) {
-        labels.push(new Date(date.setDate(date.getDate() - 1)));
-      }
-      return labels.reverse();
-    },
-    // generateData(count) {
-    //   return Array.from({ length: count }, () =>
-    //     Math.floor(Math.random() * 400)
-    //   );
-    // },
-    generateData(count) {
-      return Array.from({ length: count }, () => Math.random() * 10);
-    },
-    updateChart(number) {
-      if (this.chartInstance) {
-        // Update datasets with new data
-        this.chartInstance.data.datasets[0].data = this.generateData(30);
-        this.chartInstance.data.datasets[1].data = this.generateData(30);
-        this.button = number;
-        // Refresh the chart
-        this.chartInstance.update();
-      }
+     
     },
   },
   computed: {
+
+    
+
+
+
     sumtrx() {
       // Filter withdraw transactions with status success and calculate the sum
       const withdrawSuccessTransactions = Object.values(
@@ -455,41 +343,7 @@ export default {
       return sum;
     },
   },
-  mounted() {
-    // Initialize the chart data before creating the chart
-    this.datasets[0].data = this.generateData(30);
-    this.datasets[1].data = this.generateData(30);
 
-    // Wait for DOM updates, then initialize the chart
-    this.$nextTick(() => {
-      var ctx2 = document.getElementById("timeline-chart");
-      if (ctx2) {
-        this.chartInstance = new Chart(ctx2, {
-          type: "line",
-          data: {
-            labels: [
-              "20 Nov",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ],
-            datasets: this.datasets,
-          },
-          options: {
-            responsive: true,
-          },
-        });
-      }
-    });
-  },
   async created() {
     const userStore = useAuthUserStore();
     const authUser = userStore.authUser;
@@ -500,6 +354,24 @@ export default {
       // userStore.reSetAuthUser();
       this.authUser = await userStore.reSetAuthUser();
     }
+
+
+
+    if (this.authUser.role != 3) {
+      
+            this.$setLoading(false);
+
+          this.$notify({
+            title: "message",
+            text: "You are not a Agent",
+            type: "error",
+          });
+
+          // Change the authenticated value to false
+
+          this.$router.push("/");
+    }
+
 
     // transactionStore===================================
     const getTransaction = transactionStore();

@@ -169,8 +169,8 @@ router.beforeEach((to, from, next) => {
     } else {
       // https://api.wimbeldoninvestments.com/
       // http://127.0.0.1:8000
-      // axios.defaults.baseURL='http://127.0.0.1:8000';
-      axios.defaults.baseURL='https://backend.wimbledoninvestments.com/';
+      axios.defaults.baseURL='http://127.0.0.1:8000';
+      // axios.defaults.baseURL='https://backend.wimbledoninvestments.com/';
       axios.defaults.headers.common['Authorization']='bearer'+localStorage.getItem('token');
      
 
