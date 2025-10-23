@@ -3,7 +3,6 @@
     <div class="page_title"></div>
 
     <div class="container-fluid">
-      
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-xxl-4">
           <div class="card balance-widget">
@@ -13,21 +12,30 @@
             <div class="card-body pt-0">
               <div class="balance-widget">
                 <div class="total-balance">
-                  <h3>${{ Number(authUser.main_balance) }}</h3>
-                  <h6>Total Balance</h6>
+                  <h3>${{ sumBal }}</h3>
+                  <h6>All Users Balance</h6>
                 </div>
                 <ul class="list-unstyled">
+          
                   <li class="d-flex">
                     <i class="cc BTC me-3"></i>
                     <div class="flex-grow-1">
-                      <h5 class="m-0">Total Withdrawals</h5>
+                      <h5 class="m-0">Commissions Rate</h5>
                     </div>
                     <div class="text-end">
-                      <h5>{{ sumtrx }}</h5>
-                      <span>USD</span>
+                      <h5>{{ commission }}%</h5>
+                      <!-- <span>users</span> -->
                     </div>
                   </li>
-                 
+                  <li class="d-flex">
+                    <i class="cc BTC me-3"></i>
+                    <div class="flex-grow-1">
+                      <h5 class="m-0">Next Commissions</h5>
+                    </div>
+                    <div class="text-end">
+<h5>{{ claimable_amount.toFixed(1) }}</h5>                      <span>USD</span>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -81,35 +89,75 @@
             <div class="col-xl-6">
               <div class="">
                 <div class="card-header">
-                  <h4 class="card-title">Invite Link</h4>
-                  <button class="btn btn-primary" >more info.</button>
+                  <h4 class="card-title">
+                    Invite Link
+                    <i
+                      style="cursor: pointer"
+                      class="fa fa-info-circle"
+                      @click="download"
+                    ></i>
+                  </h4>
+                 <button v-if="canClaim" @click="rewardClaim" class="btn btn-primary">
+   Claim Now
+  </button>
+                 <button v-else class="btn btn-primary">
+   claim: {{ days }}d {{ hours }}h {{ minutes }}m {{ seconds }}s
+  </button>
                 </div>
                 <div class="card-body balance-widget">
                   <ul class="list-unstyled">
+                            <li class="d-flex">
+                    <i class="cc BTC me-3"></i>
+                    <div class="flex-grow-1">
+                      <h5 class="m-0">Total Refferal</h5>
+                    </div>
+                    <div class="text-end">
+                      <h5>{{ refferal_users.length }}</h5>
+                      <span>users</span>
+                    </div>
+                  </li>
                     <li class="d-flex">
                       <i class="cc BTC me-3"></i>
                       <div class="flex-grow-1">
                         <h5 class="m-0">Invite Code</h5>
                       </div>
                       <div class="text-end">
-                        <h5>{{ code }}  <i @click="copyLink('code')" class="fa fa-copy" style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
+                        <h5>
+                          {{ code }}
+                          <i
+                            @click="copyLink('code')"
+                            class="fa fa-copy"
+                            style="
+                              margin-left: 5px;
+                              font-size: 18px;
+                              cursor: pointer;
+                            "
+                          ></i>
+                        </h5>
                       </div>
                     </li>
-                 
+
                     <li class="d-flex">
                       <i class="cc BTC me-3"></i>
                       <div class="flex-grow-1">
                         <h5 class="m-0">Invite Link</h5>
                       </div>
                       <div class="text-end">
-                        <h5> {{ invite_link }}
-  <i class="fa fa-copy"  @click="copyLink('invite_link')"  style="margin-left: 5px;font-size: 18px;cursor: pointer;"></i></h5>
+                        <span>
+                          {{ invite_link }}
+                          <i
+                            class="fa fa-copy"
+                            @click="copyLink('invite_link')"
+                            style="
+                              margin-left: 5px;
+                              font-size: 18px;
+                              cursor: pointer;
+                            "
+                          ></i
+                        ></span>
                       </div>
                     </li>
-                 
-                    
                   </ul>
-               
                 </div>
               </div>
             </div>
@@ -120,83 +168,27 @@
         <div class="container">
           <div class="card">
             <div class="card-header border-0 py-0">
-              <h4 class="card-title">Recent Activities</h4>
-              <RouterLink to="/transaction">View More </RouterLink>
+              <h4 class="card-title">Refferal Users</h4>
             </div>
             <div class="card-body">
               <div class="transaction-table">
                 <div class="table-responsive">
                   <table class="table mb-0 table-responsive-sm">
-                    <td v-if="transactions.length == 0">No data!</td>
                     <tbody>
                       <tr
-                        v-for="(transactionItem, index) in transactions.slice(
-                          0,
-                          4
-                        )"
+                        v-for="(transactionItem, index) in refferal_users"
                         :key="index"
                       >
                         <td>
-                          <span
-                            class="sold-thumb"
-                            :class="{
-                              'sold-thumb': transactionItem.type === 'withdraw',
-                              'buy-thumb': transactionItem.type !== 'withdraw',
-                            }"
-                            ><i
-                              class="fa"
-                              :class="{
-                                'fa-arrow-up':
-                                  transactionItem.type === 'withdraw',
-                                'fa-arrow-down':
-                                  transactionItem.type !== 'withdraw',
-                              }"
-                            ></i
-                          ></span>
-                        </td>
-                        <td>
-                          {{ transactionItem.created_at.substring(0, 10) }}
+                          {{ transactionItem.name }}
                         </td>
 
                         <td>
-                          <span
-                            class="badge badge-danger"
-                            :class="{
-                              'badge-danger':
-                                transactionItem.type === 'withdraw',
-                              'badge-success':
-                                transactionItem.type !== 'withdraw',
-                            }"
-                            >{{ transactionItem.type }}</span
-                          >
+                          {{ transactionItem.email }}
                         </td>
+                        <td>{{ transactionItem.main_balance }} $</td>
                         <td>
-                          <i class="cc LTC"></i>
-                          {{ transactionItem.method }}
-                        </td>
-                        <td>Using - {{ transactionItem.address }}</td>
-                        <td
-                          class=""
-                          :class="{
-                            'text-danger': transactionItem.type === 'withdraw',
-                            'text-success': transactionItem.type !== 'withdraw',
-                          }"
-                        >
-                          {{ transactionItem.amount }} USD
-                        </td>
-                        <td>
-                          <span
-                            class="badge"
-                            :class="{
-                              'bg-warning':
-                                transactionItem.status === 'pending',
-                              'bg-danger':
-                                transactionItem.status === 'rejected',
-                              'bg-success':
-                                transactionItem.status === 'success',
-                            }"
-                            >{{ transactionItem.status }}</span
-                          >
+                          {{ transactionItem.created_at.substring(0, 10) }}
                         </td>
                       </tr>
                     </tbody>
@@ -223,127 +215,159 @@ import { RouterLink } from "vue-router";
 export default {
   data() {
     return {
+      nextClaim: null,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      countdownInterval: null,
       button: "0",
       authUser: [],
       page: "deposit",
       code: "21323v23",
-      invite_link:'https://dashboard.wimbledoninvestments.com/register?ref=4343434',
+      invite_link:
+        "https://dashboard.wimbledoninvestments.com/register?ref=4343434",
       amount: "",
       address: "Select",
       method: "Select",
-      transactions: [],
+      refferal_users: [],
       chart: null,
-      datasets: [
-        {
-          label: "REIT",
-          data: [],
-          borderColor: "#7B6FFF",
-          backgroundColor: "rgba(123, 111, 255, 0.5)",
-          fill: true,
-        },
-        {
-          label: "ETFs",
-          data: [],
-          borderColor: "#1652F0",
-          backgroundColor: "rgba(22, 82, 240, 0.5)",
-          fill: true,
-        },
+      earningsTiers: [
+        { commission: 1.0, min_balance: 0, max_balance: 10000 }, // 1% upto 10 Lakh
+        { commission: 1.25, min_balance: 10000, max_balance: 20000 }, // 1.25% 10L-20L
+        { commission: 1.5, min_balance: 20000, max_balance: 30000 }, // 1.5% 20L-30L
+        { commission: 1.75, min_balance: 30000, max_balance: 40000 }, // 1.75% 30L-40L
+        { commission: 2.0, min_balance: 40000, max_balance: Infinity }, // 2% 40L+
       ],
     };
   },
   methods: {
-      copyLink(payload) {
-        if (payload == 'invite_link') {
-               navigator.clipboard.writeText(this.invite_link);
-        } else {
-           navigator.clipboard.writeText(this.code);
+    copyLink(payload) {
+      if (payload == "invite_link") {
+        navigator.clipboard.writeText(this.invite_link);
+      } else {
+        navigator.clipboard.writeText(this.code);
+      }
+
+      this.$notify({
+        title: "",
+        text: "Copied to clipboard!",
+        type: "sucsess",
+      });
+    },
+
+    download() {
+      // ✅ Import the image from your assets folder
+      const imgPath = new URL(
+        "./../../assets/deshboard/img/partner.jfif",
+        import.meta.url
+      ).href;
+
+      // ✅ Create a hidden link and trigger download
+      const link = document.createElement("a");
+      link.href = imgPath;
+      link.download = "affiliate.jfif"; // rename as needed
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+
+    startCountdown() {
+      this.countdownInterval = setInterval(() => {
+        const now = new Date();
+        const diff = this.nextClaim - now;
+
+        if (diff <= 0) {
+          this.days = 0;
+          this.hours = 0;
+          this.minutes = 0;
+          this.seconds = 0;
+          clearInterval(this.countdownInterval);
+          return;
         }
-    
-        
-          this.$notify({
-            title: "",
-            text: "Copied to clipboard!",
-            type: "sucsess",
-          });
+
+        const totalSeconds = Math.floor(diff / 1000);
+        this.days = Math.floor(totalSeconds / (3600 * 24));
+        this.hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+        this.minutes = Math.floor((totalSeconds % 3600) / 60);
+        this.seconds = totalSeconds % 60;
+      }, 1000);
+    },
+
+    async rewardClaim(){
      
-    },
-  },
+    this.$setLoading(true);
+
+    try {
+      const data = {
+        amount: this.claimable_amount,
+      };
+
+      const response = await axios.post("/api/claim", data);
+
+      // Success: update local user data if needed
+      if (response.data.user) {
+        this.authUser = response.data.user;
+      }
+       this.$notify({
+              title: "message",
+              text: response.data.message,
+              type: "success",
+            });
+      // Optional: show toast
+    } catch (error) {
+      // Handle error message from API
+      if (error.response && error.response.data && error.response.data.message) {
+         this.$notify({
+              title: "message",
+              text: error.response.data.message,
+              type: "error",
+            });
+      } else {
+             this.$notify({
+              title: "message",
+              text: "Something went wrong!",
+              type: "error",
+            });
+      }
+    } finally {
+      this.$setLoading(false);
+    }
+  } },
+
   computed: {
-
-    
-
-
-
-    sumtrx() {
-      // Filter withdraw transactions with status success and calculate the sum
-      const withdrawSuccessTransactions = Object.values(
-        this.transactions
-      ).filter(
-        (transaction) =>
-          transaction.type === "withdraw" && transaction.status === "success"
-      );
-
-      // Use reduce to calculate the sum
-      const sum = withdrawSuccessTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
-
-      return sum;
+      canClaim() {
+      if (!this.nextClaim) return false;
+      return new Date() >= this.nextClaim;
     },
-    sumDeptrx() {
-      // Filter withdraw transactions with status success and calculate the sum
-      const withdrawSuccessTransactions = Object.values(
-        this.transactions
-      ).filter(
-        (transaction) =>
-          transaction.type === "deposit" && transaction.status === "success"
-      );
+    sumBal() {
+      // Ensure it's an array
+      const users = Array.isArray(this.refferal_users)
+        ? this.refferal_users
+        : Object.values(this.refferal_users);
 
-      // Use reduce to calculate the sum
-      const sum = withdrawSuccessTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
+      // Sum all main_balance values
+      const total = users.reduce((sum, user) => {
+        return sum + Number(user.main_balance || 0);
+      }, 0);
 
-      return sum;
+      return total;
     },
-    pensumtrx() {
-      // Filter withdraw transactions with status success and calculate the sum
-      const withdrawSuccessTransactions = Object.values(
-        this.transactions
-      ).filter(
-        (transaction) =>
-          transaction.type === "withdraw" && transaction.status === "pending"
+    commission() {
+      const tier = this.earningsTiers.find(
+        (t) => this.sumBal >= t.min_balance && this.sumBal < t.max_balance
       );
 
-      // Use reduce to calculate the sum
-      const sum = withdrawSuccessTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
-
-      return sum;
+      return tier.commission;
     },
-    pensumDeptrx() {
-      // Filter withdraw transactions with status success and calculate the sum
-      const withdrawSuccessTransactions = Object.values(
-        this.transactions
-      ).filter(
-        (transaction) =>
-          transaction.type === "deposit" && transaction.status === "pending"
-      );
-
-      // Use reduce to calculate the sum
-      const sum = withdrawSuccessTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
-
-      return sum;
+    claimable_amount() {
+      
+      return (this.sumBal / 100) * this.commission;
     },
   },
-
+  beforeUnmount() {
+    clearInterval(this.countdownInterval);
+  },
   async created() {
     const userStore = useAuthUserStore();
     const authUser = userStore.authUser;
@@ -355,35 +379,38 @@ export default {
       this.authUser = await userStore.reSetAuthUser();
     }
 
-
-
     if (this.authUser.role != 3) {
-      
-            this.$setLoading(false);
+      this.$setLoading(false);
 
-          this.$notify({
-            title: "message",
-            text: "You are not a Agent",
-            type: "error",
-          });
+      this.$notify({
+        title: "message",
+        text: "You are not a Agent",
+        type: "error",
+      });
 
-          // Change the authenticated value to false
+      // Change the authenticated value to false
 
-          this.$router.push("/");
+      this.$router.push("/");
     }
+    if (this.authUser.last_claim) {
+      const lastClaim = new Date(this.authUser.last_claim);
+      this.nextClaim = new Date(lastClaim);
+      // this.nextClaim.setDate(this.nextClaim.getDate());
 
+      this.startCountdown();
+    }
+    this.code = this.authUser.my_ref;
 
-    // transactionStore===================================
-    const getTransaction = transactionStore();
+    this.invite_link =
+      window.location.origin + "/register?ref=" + this.authUser.my_ref;
 
-    // Try to get the data from the store
-    const transactionData = getTransaction.authTransaction;
-
-    if (transactionData) {
-      this.transactions = transactionData;
-    } else {
-      // If data is not available, fetch it and set the component property
-      this.transactions = await getTransaction.authUserTransaction();
+    try {
+      const response = await axios.get("/api/ref", {
+        params: { ref_code: this.authUser.my_ref },
+      });
+      this.refferal_users = response.data.users;
+    } catch (error) {
+      console.log(error.data);
     }
 
     this.$setLoading(false);

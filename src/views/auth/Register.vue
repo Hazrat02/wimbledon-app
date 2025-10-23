@@ -13,6 +13,7 @@ export default {
       showPassword: false,
       resendcode: false,
       userCode: "",
+      reffer_code: "",
       countdown: "",
       name: "",
       email: "",
@@ -33,7 +34,14 @@ export default {
   },
 
   created() {
-    this.$setLoading(false);
+ // ✅ Get ?ref= value from URL
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+
+    // If a ref code exists, set it
+    if (ref) {
+      this.reffer_code = ref;
+    }    this.$setLoading(false);
   },
 
   methods: {
@@ -98,6 +106,7 @@ export default {
         formData.append("birth", this.birth);
         formData.append("phone", this.phone);
         formData.append("email", this.authEmail);
+        formData.append("use_ref", this.reffer_code);
         formData.append("password", this.password);
         formData.append("name", this.name);
         formData.append("password_confirmation", this.password_confirmation);
@@ -235,6 +244,7 @@ export default {
                         </div>
                       </div>
 
+                   
                       <div class="mb-1">
                         <label for="userCode">Verification OTP</label>
                         <input
@@ -588,6 +598,16 @@ export default {
                           type="number"
                           v-model="phone"
                           required
+                          class="form-control"
+                        />
+                      </div>
+                         <div class="mb-1">
+                        <label for="userCode">Refferal Code</label>
+                        <input
+                          id="userCode"
+                          placeholder="optional"
+                          type="text"
+                          v-model="reffer_code"
                           class="form-control"
                         />
                       </div>
