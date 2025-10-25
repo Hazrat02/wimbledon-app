@@ -178,7 +178,7 @@ router.beforeEach((to, from, next) => {
       setloading(true);
     
     }
-  }
+  }  
   }
 })
 

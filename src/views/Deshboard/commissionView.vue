@@ -30,10 +30,10 @@
                   <li class="d-flex">
                     <i class="cc BTC me-3"></i>
                     <div class="flex-grow-1">
-                      <h5 class="m-0">Next Commissions</h5>
+                      <h5 class="m-0">Net Commissions</h5>
                     </div>
                     <div class="text-end">
-<h5>{{ claimable_amount.toFixed(1) }}</h5>                      <span>USD</span>
+<h5>{{ claimable_amount.toFixed(1) }} $</h5>                      <span>{{ (claimable_amount*this.bank.ex_rate).toFixed(1) }}₹</span>
                     </div>
                   </li>
                 </ul>
@@ -90,22 +90,43 @@
               <div class="">
                 <div class="card-header">
                   <h4 class="card-title">
-                    Invite Link
+                    Invite details
                     <i
                       style="cursor: pointer"
                       class="fa fa-info-circle"
                       @click="download"
                     ></i>
                   </h4>
-                 <button v-if="canClaim" @click="rewardClaim" class="btn btn-primary">
-   Claim Now
+                 <button  @click="rewardClaim" class="btn btn-primary">
+   Withdraw
   </button>
-                 <button v-else class="btn btn-primary">
-   claim: {{ days }}d {{ hours }}h {{ minutes }}m {{ seconds }}s
-  </button>
+               
                 </div>
                 <div class="card-body balance-widget">
                   <ul class="list-unstyled">
+
+                      <li class="d-flex">
+                      <i class="cc BTC me-3"></i>
+                      <div class="flex-grow-1">
+                        <h5 class="m-0">Invite Link</h5>
+                      </div>
+                      <div class="text-end">
+                        <span style="  overflow-wrap: anywhere;   /* allow break anywhere if needed */
+  word-break: break-word;    /* fallback behavior for some browsers */
+  hyphens: auto;    ">
+                          {{ invite_link }}
+                          <i
+                            class="fa fa-copy"
+                            @click="copyLink('invite_link')"
+                            style="
+                              margin-left: 5px;
+                              font-size: 18px;
+                              cursor: pointer;
+                            "
+                          ></i
+                        ></span>
+                      </div>
+                    </li>
                             <li class="d-flex">
                     <i class="cc BTC me-3"></i>
                     <div class="flex-grow-1">
@@ -119,7 +140,7 @@
                     <li class="d-flex">
                       <i class="cc BTC me-3"></i>
                       <div class="flex-grow-1">
-                        <h5 class="m-0">Invite Code</h5>
+                        <h5 class="m-0">Affiliate Partner ID</h5>
                       </div>
                       <div class="text-end">
                         <h5>
@@ -137,26 +158,7 @@
                       </div>
                     </li>
 
-                    <li class="d-flex">
-                      <i class="cc BTC me-3"></i>
-                      <div class="flex-grow-1">
-                        <h5 class="m-0">Invite Link</h5>
-                      </div>
-                      <div class="text-end">
-                        <span>
-                          {{ invite_link }}
-                          <i
-                            class="fa fa-copy"
-                            @click="copyLink('invite_link')"
-                            style="
-                              margin-left: 5px;
-                              font-size: 18px;
-                              cursor: pointer;
-                            "
-                          ></i
-                        ></span>
-                      </div>
-                    </li>
+                  
                   </ul>
                 </div>
               </div>
@@ -223,6 +225,7 @@ export default {
       countdownInterval: null,
       button: "0",
       authUser: [],
+      bank: [],
       page: "deposit",
       code: "21323v23",
       invite_link:
@@ -378,6 +381,14 @@ export default {
       // userStore.reSetAuthUser();
       this.authUser = await userStore.reSetAuthUser();
     }
+    
+      try {
+        const response = await axios.get("/api/platform");
+
+        this.bank = response.data.bank[0];
+      } catch (error) {
+        console.log(error);
+      }
 
     if (this.authUser.role != 3) {
       this.$setLoading(false);
