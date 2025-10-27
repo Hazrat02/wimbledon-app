@@ -159,7 +159,7 @@
                   active: this.$route.path === '/commission',
                 }"
               >
-                <span><i class="fa fa-money me-2"></i></span>EARN
+                <span><i class="fa fa-money me-4"></i></span>  AP
               </router-link>
             </li>
             <li>

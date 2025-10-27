@@ -7,7 +7,7 @@
         <div class="col-xl-3 col-lg-4 col-xxl-4">
           <div class="card balance-widget">
             <div class="card-header border-0 py-0">
-              <h4 class="card-title">Invite Information</h4>
+              <h4 class="card-title">Authorised Partner Portal</h4>
             </div>
             <div class="card-body pt-0">
               <div class="balance-widget">
